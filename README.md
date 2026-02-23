@@ -2,6 +2,7 @@
 
 ## Group T0xG0y
 | Name              | Number    | E-Mail            |
+| ----------------- | --------- | ----------------- |
 | João Júnior       | 202306719 | up202306719@up.pt |
 | Marcelo Lima      | 202305892 | up202305892@up.pt |
 | Jennifer Cristina | 202109251 | up202109251@up.pt |
