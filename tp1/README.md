@@ -9,6 +9,7 @@
 ![Screenshot 1](screenshots/CG-t11g02-tp1-1.png)
 ![Screenshot 2](screenshots/CG-t11g02-tp1-2.png)
 ![Screenshot 3](screenshots/CG-t11g02-tp1-3.png)
+![Screenshot 3.1](screenshots/CG-t11g02-tp1-3.1.png)
 
 - In exercise 1, we extended `MyInterface` with checkboxes to toggle the visibility of `MyDiamond`, `MyTriangle`, and `MyParallelogram` independently, using boolean flags in `MyScene`.
 
