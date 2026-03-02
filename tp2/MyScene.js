@@ -90,8 +90,9 @@ export class MyScene extends CGFscene {
       this.translateFactorX, this.translateFactorY, this.translateFactorZ, 1.0
     ]
 
-    this.multMatrix(scale);
     this.multMatrix(translate);
+    this.multMatrix(scale);
+    
     //this.multMatrix(rotate);
 
     // ---- BEGIN Primitive drawing section
