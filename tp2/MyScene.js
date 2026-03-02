@@ -1,5 +1,6 @@
 import { CGFscene, CGFcamera, CGFaxis } from "../lib/CGF.js";
 import { MyDiamond } from "./MyDiamond.js";
+import { MyTriangle } from "./MyTriangle.js";
 
 /**
  * MyScene
@@ -26,18 +27,18 @@ export class MyScene extends CGFscene {
     //Initialize scene objects
     this.axis = new CGFaxis(this);
     this.diamond = new MyDiamond(this);
+    this.triangle = new MyTriangle(this);
 
     //Objects connected to MyInterface
     this.displayAxis = true;
     this.displayDiamond = true;
+    this.displayTriangle = true;
 
     this.scaleFactor = 1;
-    this.translateFactorX = 0;
+    this.translateFactorX = 1;
     this.translateFactorY = 0;
     this.translateFactorZ = 0;
-    this.rotateAngleX = 15;
-    this.rotateAngleY = 15;
-    this.rotateAngleZ = 15;
+    this.rotateAngle = 0;
   }
   initLights() {
     this.lights[0].setPosition(15, 2, 5, 1);
@@ -90,14 +91,21 @@ export class MyScene extends CGFscene {
       this.translateFactorX, this.translateFactorY, this.translateFactorZ, 1.0
     ]
 
+    var rotate = [
+      Math.cos(this.rotateAngle), Math.sin(this.rotateAngle), 0.0, 0.0,
+      -Math.sin(this.rotateAngle), Math.cos(this.rotateAngle), 0.0, 0.0,
+      0.0, 0.0, 1.0, 0.0,
+      0.0, 0.0, 0.0, 1.0
+    ]
+
     this.multMatrix(translate);
     this.multMatrix(scale);
-    
-    //this.multMatrix(rotate);
+    this.multMatrix(rotate);
 
     // ---- BEGIN Primitive drawing section
 
     this.diamond.display();
+    //this.triangle.display();
 
     // ---- END Primitive drawing section
   }
