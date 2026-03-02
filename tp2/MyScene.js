@@ -1,9 +1,5 @@
 import { CGFscene, CGFcamera, CGFaxis } from "../lib/CGF.js";
 import { MyDiamond } from "./MyDiamond.js";
-import { MyTriangle } from "./MyTriangle.js";
-import { MyParallelogram } from "./MyParallelogram.js";
-import { MyTriangleBig } from "./MyTriangleBig.js";
-import { MyTriangleSmall } from "./MyTriangleSmall.js";
 
 /**
  * MyScene
@@ -30,19 +26,18 @@ export class MyScene extends CGFscene {
     //Initialize scene objects
     this.axis = new CGFaxis(this);
     this.diamond = new MyDiamond(this);
-    this.triangle = new MyTriangle(this);
-    this.triangleBig = new MyTriangleBig(this);
-    this.triangleSmall = new MyTriangleSmall(this);
-    this.parallelogram = new MyParallelogram(this);
 
     //Objects connected to MyInterface
     this.displayAxis = true;
-    this.displayParallelogram = false;
     this.displayDiamond = true;
-    this.displayTriangle = false;
-    this.displayTriangleBig = false;
-    this.displayTriangleSmall = false;
+
     this.scaleFactor = 1;
+    this.translateFactorX = 0;
+    this.translateFactorY = 0;
+    this.translateFactorZ = 0;
+    this.rotateAngleX = 15;
+    this.rotateAngleY = 15;
+    this.rotateAngleZ = 15;
   }
   initLights() {
     this.lights[0].setPosition(15, 2, 5, 1);
@@ -89,19 +84,19 @@ export class MyScene extends CGFscene {
     ];
 
     var translate = [
-      1.0, 
+      1.0, 0.0, 0.0, 0.0,
+      0.0, 1.0, 0.0, 0.0,
+      0.0, 0.0, 1.0, 0.0,
+      this.translateFactorX, this.translateFactorY, this.translateFactorZ, 1.0
+    ]
 
     this.multMatrix(scale);
     this.multMatrix(translate);
-    this.multMatrix(rotate);
+    //this.multMatrix(rotate);
 
     // ---- BEGIN Primitive drawing section
 
     this.diamond.display();
-    this.triangle.display();
-    this.triangleBig.display();
-    this.triangleSmall.display();
-    this.parallelogram.display();
 
     // ---- END Primitive drawing section
   }
