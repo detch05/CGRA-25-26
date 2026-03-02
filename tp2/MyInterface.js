@@ -25,6 +25,7 @@ export class MyInterface extends CGFinterface {
         this.gui.add(this.scene, 'translateFactorX', 0.0, 5).name('X Translate Factor');
         this.gui.add(this.scene, 'translateFactorY', 0.0, 5).name('Y Translate Factor');
         this.gui.add(this.scene, 'translateFactorZ', 0.0, 5).name('Z Translate Factor');
+        this.gui.add(this.scene, 'rotateAngle', 0, Math.PI*2).name('Rotate Factor');
 
         //Checkbox element in GUI
         this.gui.add(this.scene, 'displayDiamond').name('Display Diamond');
