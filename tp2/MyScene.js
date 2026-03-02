@@ -1,7 +1,5 @@
 import { CGFscene, CGFcamera, CGFaxis } from "../lib/CGF.js";
-import { MyDiamond } from "./MyDiamond.js";
-import { MyTriangle } from "./MyTriangle.js";
-import { MyParallelogram } from "./MyParallelogram.js";
+import { MyTangram } from "./MyTangram.js";
 
 /**
  * MyScene
@@ -27,21 +25,12 @@ export class MyScene extends CGFscene {
 
     //Initialize scene objects
     this.axis = new CGFaxis(this);
-    this.diamond = new MyDiamond(this);
-    this.triangle = new MyTriangle(this);
-    this.parallelogram = new MyParallelogram(this);
+    this.tangram = new MyTangram(this);
 
     //Objects connected to MyInterface
     this.displayAxis = true;
-    this.displayDiamond = true;
-    this.displayTriangle = true;
-    this.displayParallelogram = true;
+    this.displayTangram = true;
 
-    /* this.scaleFactor = 1;
-    this.translateFactorX = 0;
-    this.translateFactorY = 0;
-    this.translateFactorZ = 0;
-    this.rotateAngle = 0; */
   }
   initLights() {
     this.lights[0].setPosition(15, 2, 5, 1);
@@ -80,115 +69,8 @@ export class MyScene extends CGFscene {
 
     this.setDefaultAppearance();
 
-    // Transformations
-    var s = 1.0 / Math.sqrt(2);
-    var scale = [
-      s,   0.0, 0.0, 0.0,
-      0.0, s,   0.0, 0.0,
-      0.0, 0.0, 1.0, 0.0,
-      0.0, 0.0, 0.0, 1.0
-    ];
-
-    var translate = [
-      1.0, 0.0, 0.0, 0.0,
-      0.0, 1.0, 0.0, 0.0,
-      0.0, 0.0, 1.0, 0.0,
-      0.5, 0.0, 0.0, 1.0
-    ]
-
-    var rotate = [
-      Math.cos(Math.PI/4), Math.sin(Math.PI/4), 0.0, 0.0,
-      -Math.sin(Math.PI/4), Math.cos(Math.PI/4), 0.0, 0.0,
-      0.0, 0.0, 1.0, 0.0,
-      0.0, 0.0, 0.0, 1.0
-    ]
-    
-
     // ---- BEGIN Primitive drawing section
-    // green square
-    this.pushMatrix();
-    this.multMatrix(translate);
-    this.multMatrix(rotate);
-    this.multMatrix(scale);
-
-    this.setAmbient(0.0, 1.0, 0.0, 1.0);   // R, G, B, A
-    this.setDiffuse(0.0, 1.0, 0.0, 1.0);
-    this.setSpecular(0.0, 1.0, 0.0, 1.0);
-
-    this.diamond.display();
-    this.popMatrix();
-
-    // pink triangle
-    this.pushMatrix();
-    this.translate(0, -1, 0);
-
-    this.setAmbient (227/255, 61/255, 148/255, 1.0);   // R, G, B, A
-    this.setDiffuse (227/255, 61/255, 148/255, 1.0);
-    this.setSpecular(227/255, 61/255, 148/255, 1.0);
-
-    this.triangle.display();
-    this.popMatrix();
-
-    // red triangle
-    this.pushMatrix();
-    this.translate(0, 1.7, 0);
-    this.scale(-0.7, -0.7 ,0);
-
-    this.setAmbient(1.0, 0.0, 0.0, 1.0);   // R, G, B, A
-    this.setDiffuse(1.0, 0.0, 0.0, 1.0);
-    this.setSpecular(1.0, 0.0, 0.0, 1.0);
-
-    this.triangle.display();
-    this.popMatrix();
-
-    // blue triangle
-    this.pushMatrix();
-    this.translate(0, 1.7+Math.sqrt(2), 0);
-    this.rotate(Math.PI*3/4, 0, 0, 1);
-
-    this.setAmbient (0.0, 0.0, 1.0, 1.0);   // R, G, B, A
-    this.setDiffuse (0.0, 0.0, 1.0, 1.0);
-    this.setSpecular(0.0, 0.0, 1.0, 1.0);
-
-    this.triangle.display();
-    this.popMatrix();
-
-    // orange triangle
-    this.pushMatrix();
-    this.translate(0, 1.7+Math.sqrt(2), 0);
-    this.rotate(Math.PI*5/4, 0, 0, 1);
-
-    this.setAmbient (1.0, 165.0/255, 0.0, 1.0);   // R, G, B, A
-    this.setDiffuse (1.0, 165.0/255, 0.0, 1.0);
-    this.setSpecular(1.0, 165.0/255, 0.0, 1.0);
-
-    this.triangle.display();
-    this.popMatrix();
-
-    // purple triangle
-    this.pushMatrix();
-    this.translate(-0.7, -1, 0);
-    this.scale(-0.7, -0.7 ,0);
-
-    this.setAmbient (0.5, 0.0, 0.5, 1.0);   // R, G, B, A
-    this.setDiffuse (0.5, 0.0, 0.5, 1.0);
-    this.setSpecular(0.5, 0.0, 0.5, 1.0);
-
-    this.triangle.display();
-    this.popMatrix();
-
-    // yellow parallelogram
-    this.pushMatrix();
-    this.translate(0, -1.7, 0)
-    this.scale(0.7, -0.7, 0);
-
-    this.setAmbient(1.0, 1.0, 0.0, 1.0);   // R, G, B, A
-    this.setDiffuse(1.0, 1.0, 0.0, 1.0);
-    this.setSpecular(1.0, 1.0, 0.0, 1.0);
-
-    this.parallelogram.display();
-    this.popMatrix();
-
+    this.tangram.display();
     // ---- END Primitive drawing section
   }
 }
