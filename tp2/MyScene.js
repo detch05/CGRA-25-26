@@ -142,14 +142,53 @@ export class MyScene extends CGFscene {
     this.popMatrix();
 
     // blue triangle
+    this.pushMatrix();
+    this.translate(0, 1.7+Math.sqrt(2), 0);
+    this.rotate(Math.PI*3/4, 0, 0, 1);
+
+    this.setAmbient (0.0, 0.0, 1.0, 1.0);   // R, G, B, A
+    this.setDiffuse (0.0, 0.0, 1.0, 1.0);
+    this.setSpecular(0.0, 0.0, 1.0, 1.0);
+
+    this.triangle.display();
+    this.popMatrix();
 
     // orange triangle
+    this.pushMatrix();
+    this.translate(0, 1.7+Math.sqrt(2), 0);
+    this.rotate(Math.PI*5/4, 0, 0, 1);
+
+    this.setAmbient (1.0, 165.0/255, 0.0, 1.0);   // R, G, B, A
+    this.setDiffuse (1.0, 165.0/255, 0.0, 1.0);
+    this.setSpecular(1.0, 165.0/255, 0.0, 1.0);
+
+    this.triangle.display();
+    this.popMatrix();
 
     // purple triangle
+    this.pushMatrix();
+    this.translate(-0.7, -1, 0);
+    this.scale(-0.7, -0.7 ,0);
+
+    this.setAmbient (0.5, 0.0, 0.5, 1.0);   // R, G, B, A
+    this.setDiffuse (0.5, 0.0, 0.5, 1.0);
+    this.setSpecular(0.5, 0.0, 0.5, 1.0);
+
+    this.triangle.display();
+    this.popMatrix();
 
     // yellow parallelogram
+    this.pushMatrix();
+    this.translate(0, -1.7, 0)
+    this.scale(0.7, -0.7, 0);
 
-    
+    this.setAmbient(1.0, 1.0, 0.0, 1.0);   // R, G, B, A
+    this.setDiffuse(1.0, 1.0, 0.0, 1.0);
+    this.setSpecular(1.0, 1.0, 0.0, 1.0);
+
+    this.parallelogram.display();
+    this.popMatrix();
+
     // ---- END Primitive drawing section
   }
 }
