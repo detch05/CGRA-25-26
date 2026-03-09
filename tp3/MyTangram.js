@@ -11,6 +11,22 @@ export class MyTangram extends CGFobject {
         this.parallelogram = new MyParallelogram(scene);
     }
 
+    enableNormalViz() {
+        this.diamond.enableNormalViz();
+        this.parallelogram.enableNormalViz();
+        this.triangle.enableNormalViz();
+    }
+
+    disableNormalViz() {
+        this.diamond.disableNormalViz();
+        this.parallelogram.disableNormalViz();
+        this.triangle.disableNormalViz();
+    }
+
+    updateBuffers(complexity){
+        this.initBuffers();
+    }
+
     display() {
         var s = 1.0 / Math.sqrt(2);
         var scale = [
