@@ -47,16 +47,21 @@ export class MyUnitCube extends CGFobject {
         this.indices = [
             0, 2, 3,    // tras
             0, 1, 2,    // tras
+
             4, 7, 6,    // frente
             4, 6, 5,    // frente
-            1, 6, 2,    // cima
-            1, 5, 6,    // cima
-            0, 3, 7,    // baixo
-            0, 7, 4,    // baixo
-            0, 4, 5,    // esquerda
-            0, 5, 1,    // esquerda
-            7, 3, 2,    // direita
-            7, 2, 6,    // direita
+
+            8, 10, 11,  // cima
+            8, 9, 10,   // cima
+
+            12, 13, 15, // baixo
+            12, 15, 14, // baixo
+
+            16, 18, 19, // esquerda
+            16, 19, 17, // esquerda
+
+            20, 22, 23, // direita
+            20, 23, 21, // direita
         ];
 
         this.normals = [
