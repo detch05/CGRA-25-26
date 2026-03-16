@@ -73,7 +73,7 @@ export class MyTangram extends CGFobject {
         // red triangle
         this.scene.pushMatrix();
         this.scene.translate(0, 1.7, 0);
-        this.scene.scale(-0.7, -0.7, 0);
+        this.scene.scale(-0.7, -0.7, 1);
         this.scene.setAmbient(1.0, 0.0, 0.0, 1.0);
         this.scene.setDiffuse(1.0, 0.0, 0.0, 1.0);
         this.scene.setSpecular(1.0, 0.0, 0.0, 1.0);
@@ -103,7 +103,7 @@ export class MyTangram extends CGFobject {
         // purple triangle
         this.scene.pushMatrix();
         this.scene.translate(-0.7, -1, 0);
-        this.scene.scale(-0.7, -0.7, 0);
+        this.scene.scale(-0.7, -0.7, 1);
         this.scene.setAmbient(0.5, 0.0, 0.5, 1.0);
         this.scene.setDiffuse(0.5, 0.0, 0.5, 1.0);
         this.scene.setSpecular(0.5, 0.0, 0.5, 1.0);
@@ -113,7 +113,7 @@ export class MyTangram extends CGFobject {
         // yellow parallelogram
         this.scene.pushMatrix();
         this.scene.translate(0, -1.7, 0);
-        this.scene.scale(0.7, -0.7, 0);
+        this.scene.scale(0.7, -0.7, 1);
         this.scene.setAmbient(1.0, 1.0, 0.0, 1.0);
         this.scene.setDiffuse(1.0, 1.0, 0.0, 1.0);
         this.scene.setSpecular(1.0, 1.0, 0.0, 1.0);
