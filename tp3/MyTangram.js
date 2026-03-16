@@ -1,4 +1,4 @@
-import { CGFobject } from '../lib/CGF.js';
+import { CGFobject, CGFappearance } from '../lib/CGF.js';
 import { MyDiamond } from "./MyDiamond.js";
 import { MyTriangle } from "./MyTriangle.js";
 import { MyParallelogram } from "./MyParallelogram.js";
@@ -9,6 +9,7 @@ export class MyTangram extends CGFobject {
         this.diamond = new MyDiamond(scene);
         this.triangle = new MyTriangle(scene);
         this.parallelogram = new MyParallelogram(scene);
+        this.initMaterials(scene);
     }
 
     enableNormalViz() {
@@ -23,9 +24,17 @@ export class MyTangram extends CGFobject {
         this.triangle.disableNormalViz();
     }
 
-    updateBuffers(complexity){
-        this.initBuffers();
+
+    initMaterials(scene) {
+        // diamond high specularity
+        this.diamondMaterial = new CGFappearance(scene);
+        this.diamondMaterial.setAmbient(0, 1.0, 0, 1.0);
+        this.diamondMaterial.setDiffuse(0.0, 1, 0, 1.0);
+        this.diamondMaterial.setSpecular(1.0, 1.0, 1.0, 1.0);
+        this.diamondMaterial.setShininess(100);
+
     }
+
 
     display() {
         var s = 1.0 / Math.sqrt(2);
@@ -55,9 +64,7 @@ export class MyTangram extends CGFobject {
         this.scene.multMatrix(translate);
         this.scene.multMatrix(rotate);
         this.scene.multMatrix(scale);
-        this.scene.setAmbient(0.0, 1.0, 0.0, 1.0);
-        this.scene.setDiffuse(0.0, 1.0, 0.0, 1.0);
-        this.scene.setSpecular(0.0, 1.0, 0.0, 1.0);
+        this.diamondMaterial.apply();
         this.diamond.display();
         this.scene.popMatrix();
 
