@@ -10,6 +10,7 @@ export class MyPrism extends CGFobject {
         this.slices = slices;
         this.stacks = stacks;
         this.initBuffers();
+        this.initNormalVizBuffers();
     }
     
     initBuffers() {
@@ -56,10 +57,41 @@ export class MyPrism extends CGFobject {
                     this.normals.push(nx,ny,0);
                 }
             }
-            
+        }
+
+        // Add base vertices and normals
+        let centerBottom = this.vertices.length / 3;
+        this.vertices.push(0, 0, 0);
+        this.normals.push(0, 0, -1);
+
+        let centerTop = this.vertices.length / 3;
+        this.vertices.push(0, 0, 1);
+        this.normals.push(0, 0, 1);
+
+        // Add base indices
+        for(let i = 0; i < this.slices; i++){
+            let baseBottom = i * this.stacks * 4;
+            let v1Bottom = baseBottom;
+            let v2Bottom = baseBottom + 1;
+
+            this.indices.push(centerBottom, v2Bottom, v1Bottom);
+
+            let baseTop = (i * this.stacks + this.stacks - 1) * 4;
+            let v1Top = baseTop + 2;
+            let v2Top = baseTop + 3;
+
+            this.indices.push(centerTop, v1Top, v2Top);
         }
 
         this.primitiveType = this.scene.gl.TRIANGLES;
         this.initGLBuffers();
+    }
+
+    updateBuffers(complexity) {
+        this.slices = 3 + Math.round(9 * complexity); //complexity varies 0-1, so slices varies 3-12
+
+        // reinitialize buffers
+        this.initBuffers();
+        this.initNormalVizBuffers();
     }
 }
