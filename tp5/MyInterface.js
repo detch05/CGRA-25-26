@@ -1,4 +1,3 @@
-
 import {CGFinterface, dat} from '../lib/CGF.js';
 
 /**
