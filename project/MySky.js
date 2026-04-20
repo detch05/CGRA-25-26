@@ -6,51 +6,51 @@ import {CGFobject} from '../lib/CGF.js';
  * @param {Array} coords - Array of texture coordinates (optional)
  */
 export class MyQuad extends CGFobject {
-	constructor(scene, coords) {
+	constructor(scene, radius, coords, slices) {
 		super(scene);
 		this.initBuffers();
 		if (coords != undefined)
 			this.updateTexCoords(coords);
+		if (slices != undefined)
+			this.slices = 1;
+		if (radius != undefined)
+			this.radius = 1;
 	}
 	
 	initBuffers() {
+
+		// começamos com o prisma triangular
 		this.vertices = [
-			-0.5, -0.5, 0,	//0
-			0.5, -0.5, 0,	//1
-			-0.5, 0.5, 0,	//2
-			0.5, 0.5, 0		//3
-		];
+			this.radius, 0, 0, 		// cima frente direita
+			0, 0, this.radius,		// 
+			0, this.radius, 0,		// 
 
-		//Counter-clockwise reference of vertices
-		this.indices = [
-			0, 1, 2,
-			1, 3, 2
-		];
+			-this.radius, 0, 0,		// cima frente esquerda
+			0, 0, this.radius,		// 
+			0, this.radius, 0,		// 
 
-		//Facing Z positive
-		this.normals = [
-			0, 0, 1,
-			0, 0, 1,
-			0, 0, 1,
-			0, 0, 1
-		];
-		
-		/*
-		Texture coords (s,t)
-		+----------> s
-        |
-        |
-		|
-		v
-        t
-        */
+			this.radius, 0, 0, 		// cima tras direita
+			0, 0, -this.radius,		//
+			0, this.radius, 0,		//
 
-		this.texCoords = [
-			0, 1,
-			1, 1,
-			0, 0,
-			1, 0
+			-this.radius, 0, 0, 	// cima tras esquerda
+			0, 0, -this.radius,		//
+			0, this.radius, 0,		//
 		]
+
+		this.indices = [
+			0, 1, 2,				// cima frente direita
+
+			3, 4, 5,				// cima frente esquerda
+			
+			6, 7, 8,				// cima tras direita
+			
+			9, 10, 11				// cima tras esquerda
+		]
+
+		// sub-dividimos cada face 
+		for (var i = 0; )
+
 		this.primitiveType = this.scene.gl.TRIANGLES;
 		this.initGLBuffers();
 	}

@@ -26,7 +26,7 @@ export class MyScene extends CGFscene {
 
         //Initialize scene objects
         this.axis = new CGFaxis(this);
-        this.quad = new MyQuad(this);
+        this.quad = new MyQuad(this, 5);
 
         //------ Applied Material
         this.quadMaterial = new CGFappearance(this);
