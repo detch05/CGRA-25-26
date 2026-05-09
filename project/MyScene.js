@@ -1,5 +1,5 @@
 import { CGFscene, CGFcamera, CGFaxis, CGFappearance, CGFtexture } from "../lib/CGF.js";
-import { MyQuad } from "./MySphere.js";
+import { MySphere } from "./MySphere.js";
 
 /**
  * MyScene
@@ -26,72 +26,33 @@ export class MyScene extends CGFscene {
 
         //Initialize scene objects
         this.axis = new CGFaxis(this);
-        this.quad = new MyQuad(this, 5);
-
-        //------ Applied Material
-        this.quadMaterial = new CGFappearance(this);
-        this.quadMaterial.setAmbient(0.1, 0.1, 0.1, 1);
-        this.quadMaterial.setDiffuse(0.9, 0.9, 0.9, 1);
-        this.quadMaterial.setSpecular(0.1, 0.1, 0.1, 1);
-        this.quadMaterial.setShininess(10.0);
-        this.quadMaterial.loadTexture('images/default.png');
-        this.quadMaterial.setTextureWrap('REPEAT', 'REPEAT');
-        //------
+        this.sphere = new MySphere(this, 64, 32, true);
 
         //------ Textures
-        this.texture1 = new CGFtexture(this, 'images/board.jpg');
-        this.texture2 = new CGFtexture(this, 'images/floor.png');
-        this.texture3 = new CGFtexture(this, 'images/window.jpg');
-        //-------
+        this.skyTexture = new CGFtexture(this, 'images/sky.jpg');
+
+        //------- Material
+        this.skyMaterial = new CGFappearance(this);
+        this.skyMaterial.setAmbient(1,1,1,1);
+        this.skyMaterial.setDiffuse(1,1,1,1);
+        this.skyMaterial.setSpecular(0,0,0,1);
+        this.skyMaterial.setShininess(10);
+        this.skyMaterial.setTexture(this.skyTexture);
 
         //-------Objects connected to MyInterface
         this.displayAxis = true;
-        this.scaleFactor = 5;
-        this.selectedTexture = -1;        
-        this.wrapS = 0;
-        this.wrapT = 0;
-
-        this.textures = [this.texture1, this.texture2, this.texture3];
-        this.texCoords = [0.0, 1.0, 1.0, 1.0, 0.0, 0.0, 1.0, 0.0];
-        this.wrappingMethods = ['REPEAT', 'CLAMP_TO_EDGE', 'MIRRORED_REPEAT'];
-
-        this.textureIds = { 'Board': 0, 'Floor': 1, 'Window': 2 };
-        this.wrappingS = { 'Repeat': 0, 'Clamp to edge': 1, 'Mirrored repeat': 2 };
-        this.wrappingT = { 'Repeat': 0, 'Clamp to edge': 1, 'Mirrored repeat': 2 };
-
+       
       }
 
     initLights() {
-        this.lights[0].setPosition(5, 2, 5, 1);
+        this.lights[0].setPosition(5, 10, 5, 1);
         this.lights[0].setDiffuse(1.0, 1.0, 1.0, 1.0);
         this.lights[0].enable();
         this.lights[0].update();
     }
 
     initCameras() {
-        this.camera = new CGFcamera(0.4, 0.1, 500, vec3.fromValues(15, 15, 15), vec3.fromValues(0, 0, 0));
-    }
-
-    setDefaultAppearance() {
-        this.setAmbient(0.2, 0.4, 0.8, 1.0);
-        this.setDiffuse(0.2, 0.4, 0.8, 1.0);
-        this.setSpecular(0.2, 0.4, 0.8, 1.0);
-        this.setShininess(10.0);
-    }
-
-    //Function that resets selected texture in quadMaterial
-    updateAppliedTexture() {
-        this.quadMaterial.setTexture(this.textures[this.selectedTexture]);
-    }
-
-    //Function that updates wrapping mode in quadMaterial
-    updateTextureWrapping() {
-        this.quadMaterial.setTextureWrap(this.wrappingMethods[this.wrapS], this.wrappingMethods[this.wrapT]);
-    }
-
-    //Function that updates texture coordinates in MyQuad
-    updateTexCoords() {
-        this.quad.updateTexCoords(this.texCoords);
+        this.camera = new CGFcamera(0.4, 0.1, 500, vec3.fromValues(5, 5, 5), vec3.fromValues(0, 0, 0));
     }
 
     display() {
@@ -110,13 +71,22 @@ export class MyScene extends CGFscene {
         if (this.displayAxis)
             this.axis.display();
 
-        this.setDefaultAppearance();
+        this.pushMatrix();
 
-        this.scale(this.scaleFactor, this.scaleFactor, this.scaleFactor);
+        this.gl.disable(this.gl.CULL_FACE);
 
+        this.scale(50, 50, 50);
+
+        this.skyMaterial.apply();
+
+        this.sphere.display();
+
+        this.gl.enable(this.gl.CULL_FACE);
+
+        this.popMatrix();
         // ---- BEGIN Primitive drawing section
 
-        this.quadMaterial.apply();
+        
 
         // Default texture filtering in WebCGF is LINEAR. 
         // Uncomment next line for NEAREST when magnifying, or 
@@ -124,8 +94,7 @@ export class MyScene extends CGFscene {
         
         // this.gl.texParameteri(this.gl.TEXTURE_2D, this.gl.TEXTURE_MAG_FILTER, this.gl.NEAREST);
 
-        this.quad.display();
-
+        
         // ---- END Primitive drawing section
     }
 }
