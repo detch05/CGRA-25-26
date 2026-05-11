@@ -1,6 +1,6 @@
 import { CGFscene, CGFcamera, CGFaxis } from "../lib/CGF.js";
 import { MySky } from "./MySky.js";
-import { MySun } from "./MySun.js";
+import { MySun } from "./modelos/MySun.js";
 import { MyCloud } from "./MyCloud.js";
 //import { MyGround } from "./MyGround.js";
 
