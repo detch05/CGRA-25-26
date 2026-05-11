@@ -1,12 +1,12 @@
 import { CGFobject } from "../lib/CGF.js";
 
 export class MySphere extends CGFobject {
-      /**
-   * @param scene   – a cena CGF
-   * @param slices  – número de fatias (divisões em torno de Y)
-   * @param stacks  – número de camadas (divisões de polo a polo)
-   * @param inside  – se true, inverte winding e normais para ser vista de dentro
-   */
+    /**
+    * @param scene   – a cena CGF
+    * @param slices  – número de fatias (divisões em torno de Y)
+    * @param stacks  – número de camadas (divisões de polo a polo)
+    * @param inside  – se true, inverte winding e normais para ser vista de dentro
+    */
 
     constructor(scene, slices, stacks, inside = false) {
         super(scene);
