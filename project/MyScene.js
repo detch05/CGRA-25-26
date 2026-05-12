@@ -2,6 +2,8 @@ import { CGFscene, CGFcamera, CGFaxis } from "../lib/CGF.js";
 import { MySky } from "./modelos/MySky.js";
 import { MySun } from "./modelos/MySun.js";
 import { MyCloud } from "./modelos/MyCloud.js";
+import { MyBarn } from "./modelos/MyBarn.js";
+import { MyGround } from "./modelos/MyGround.js";
 
 /**
  * MyScene
@@ -52,7 +54,11 @@ export class MyScene extends CGFscene {
         this.cloud3 = new MyCloud(this, 0, 45, -60);
 
         // GROUND
-        //this.ground = new MyGround(this);
+        this.ground = new MyGround(this);
+
+        // BARN
+        this.barn = new MyBarn(this);
+
     }
 
     initLights() {
@@ -107,5 +113,12 @@ export class MyScene extends CGFscene {
         this.cloud2.display();
 
         this.cloud3.display();
+
+        // // GROUND
+        // this.ground.display();
+
+        // BARN
+        this.barn.display();
+
     }
 }
