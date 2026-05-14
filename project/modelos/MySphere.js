@@ -54,6 +54,9 @@ export class MySphere extends CGFobject {
             }
         }
 
+        // Keep a copy for later remapping (e.g. half-texture for sun/moon)
+        this.baseTexCoords = this.texCoords.slice();
+
         // Aqui é para os índices dos triângulos
         for (let i = 0; i < this.stacks; i++) {
             for (let j = 0; j < this.slices; j++) {
@@ -73,5 +76,21 @@ export class MySphere extends CGFobject {
 
         this.primitiveType = this.scene.gl.TRIANGLES;
         this.initGLBuffers();
+    }
+
+    updateTexCoords(uScale, uOffset, vScale = 1, vOffset = 0) {
+        if (!this.baseTexCoords) {
+            return;
+        }
+
+        const texCoords = [];
+        for (let i = 0; i < this.baseTexCoords.length; i += 2) {
+            const u = this.baseTexCoords[i];
+            const v = this.baseTexCoords[i + 1];
+            texCoords.push(u * uScale + uOffset, v * vScale + vOffset);
+        }
+
+        this.texCoords = texCoords;
+        this.updateTexCoordsGLBuffers();
     }
 }

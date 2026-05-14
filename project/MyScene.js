@@ -36,6 +36,9 @@ export class MyScene extends CGFscene {
         this.axis = new CGFaxis(this);
 
         // Interface
+        this.currentTime = 0;  // 0 = noon, 0.5 = midnight, 1 = next noon
+        this.timeSpeed = 1;    // Time speed multiplier
+        this.lastTime = Date.now();
         this.displayAxis = true;
 
         // SKY
@@ -44,12 +47,8 @@ export class MyScene extends CGFscene {
         // SUN
         this.sun = new MySun(this);
 
-        // CLOUDS
-        this.cloud1 = new MyCloud(this, -50, 50, -80);
-
-        this.cloud2 = new MyCloud(this, 40, 55, -100);
-
-        this.cloud3 = new MyCloud(this, 0, 45, -60);
+        // CLOUD LAYER
+        this.cloudLayer = new MyCloud(this);
 
         // GROUND
         //this.ground = new MyGround(this);
@@ -77,12 +76,52 @@ export class MyScene extends CGFscene {
         );
     }
 
+    updateLighting() {
+        const angle = this.currentTime * Math.PI * 2;
+
+        // Match sun orbit (rotate around Z, then translate on +Y)
+        const sunDist = 100;
+        const sunX = -Math.sin(angle) * sunDist;
+        const sunY = Math.cos(angle) * sunDist;
+
+        this.lights[0].setPosition(sunX, sunY, 0, 1);
+
+        // Day factor: 1 at noon, 0 at midnight
+        const dayFactor = (Math.cos(angle) + 1) / 2;
+
+        const rDay = 1.0;
+        const gDay = 0.9;
+        const bDay = 0.5;
+
+        const rNight = 0.6;
+        const gNight = 0.7;
+        const bNight = 1.0;
+
+        const r = rNight + (rDay - rNight) * dayFactor;
+        const g = gNight + (gDay - gNight) * dayFactor;
+        const b = bNight + (bDay - bNight) * dayFactor;
+
+        const intensity = 0.2 + dayFactor * 0.8;
+
+        this.lights[0].setDiffuse(r * intensity, g * intensity, b * intensity, 1.0);
+        this.lights[0].update();
+    }
     display() {
 
         // Clear buffers
         this.gl.viewport(0, 0, this.gl.canvas.width, this.gl.canvas.height);
 
         this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT);
+
+        // Update timer
+        const currentTime = Date.now();
+        const deltaTime = (currentTime - this.lastTime) / 1000.0;
+        this.lastTime = currentTime;
+
+        const timeIncrement = (deltaTime / 240) * this.timeSpeed;
+        this.currentTime = (this.currentTime + timeIncrement) % 1.0;
+
+        this.updateLighting();
 
         // Camera
         this.updateProjectionMatrix();
@@ -102,10 +141,6 @@ export class MyScene extends CGFscene {
         this.sun.display();
 
         // CLOUDS
-        this.cloud1.display();
-
-        this.cloud2.display();
-
-        this.cloud3.display();
+        this.cloudLayer.display();
     }
 }
