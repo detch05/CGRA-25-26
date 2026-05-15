@@ -26,11 +26,12 @@ export class MySun {
         this.moonMaterial.setShininess(80);
 
         // Textura com sol e lua (sol na metade esquerda, lua na metade direita)
-        this.sunMaterial.loadTexture("images/sun_n_moon.png");
-        this.moonMaterial.loadTexture("images/sun_n_moon.png");
+        this.sunMaterial.loadTexture("images/sun_tex.png");
+        this.moonMaterial.loadTexture("images/moon_tex.png");
 
-        this.sunSphere.updateTexCoords(0.5, 0.0);
-        this.moonSphere.updateTexCoords(0.5, 0.5);
+        // Map sun and moon
+        this.sunSphere.updateTexCoords();
+        this.moonSphere.updateTexCoords();
 
         // Raio do sol/lua
         this.radius = 8;

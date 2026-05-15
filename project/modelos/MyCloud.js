@@ -11,17 +11,17 @@ export class MyCloud {
         this.height = 50;
         this.size = 40;
         this.rotationSpeed = 1.0;
-        this.opacity = 0.75;
+        this.opacity = 0.5;
 
         this.quad = new MyQuad(scene);
 
         // Material base para nuvem
         this.material = new CGFappearance(scene);
 
-        this.material.setAmbient(1, 1, 1, this.opacity);
-        this.material.setDiffuse(1, 1, 1, this.opacity);
-        this.material.setSpecular(0, 0, 0, 1);
-        this.material.setEmission(0.0, 0.0, 0.0, 1);
+        this.material.setAmbient(0, 0, 0, 0);
+        this.material.setDiffuse(0, 0, 0, 0);
+        this.material.setSpecular(0, 0, 0, 0);
+        this.material.setEmission(1, 1, 1, this.opacity);
         this.material.setShininess(1);
 
         // Carregar textura de nuvem
@@ -36,7 +36,7 @@ export class MyCloud {
         const angle = this.scene.currentTime * Math.PI * 2 * this.rotationSpeed;
         this.scene.rotate(angle, 0, 1, 0);
         this.scene.translate(0, this.height, this.orbitRadius);
-        this.scene.scale(this.size, this.size, 1);
+        this.scene.scale(this.size*2.5, this.size, 1);
 
         // Blending para opacidades por camada
         this.scene.gl.enable(this.scene.gl.BLEND);
