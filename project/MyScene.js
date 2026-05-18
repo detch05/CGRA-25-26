@@ -2,6 +2,7 @@ import { CGFscene, CGFcamera, CGFaxis } from "../lib/CGF.js";
 import { MySky } from "./modelos/MySky.js";
 import { MySun } from "./modelos/MySun.js";
 import { MyCloud } from "./modelos/MyCloud.js";
+import { MyGround } from "./modelos/MyGround.js";
 
 /**
  * MyScene
@@ -41,6 +42,9 @@ export class MyScene extends CGFscene {
         this.lastTime = Date.now();
         this.displayAxis = true;
 
+        // GROUND
+         this.ground = new MyGround(this);
+         
         // SKY
         this.sky = new MySky(this);
 

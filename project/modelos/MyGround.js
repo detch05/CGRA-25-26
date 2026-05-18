@@ -1,4 +1,4 @@
-import { CGFobject, CGFappearance } from "../../lib/CGF.js";
+import { CGFobject, CGFappearance, CGFtexture } from "../../lib/CGF.js";
 
 export class MyGround extends CGFobject {
 
@@ -8,13 +8,17 @@ export class MyGround extends CGFobject {
 
         this.material = new CGFappearance(scene);
 
-        this.material.setAmbient(0.2, 0.8, 0.2, 1);
+        this.material.setAmbient(0.7, 0.7, 0.7, 1);
 
         this.material.setDiffuse(0.2, 0.8, 0.2, 1);
 
         this.material.setSpecular(0,0,0,1);
 
         this.material.setShininess(5);
+
+        this.texture = new CGFtexture(scene, "images/ground.png");
+        this.material.setTexture(this.texture);
+        this.material.setTextureWrap('REPEAT', 'REPEAT');
 
         this.initBuffers();
     }
@@ -42,9 +46,9 @@ export class MyGround extends CGFobject {
 
         this.texCoords = [
             0,0,
-            1,0,
-            0,1,
-            1,1
+            20,0,
+            0,20,
+            20,20
         ];
 
         this.primitiveType = this.scene.gl.TRIANGLES;
@@ -59,7 +63,7 @@ export class MyGround extends CGFobject {
         // chão gigante
         this.scene.translate(0, -2, 0);
 
-        this.scene.scale(300,1,300);
+        this.scene.scale(50,1,50);
 
         this.material.apply();
 
