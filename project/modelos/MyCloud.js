@@ -7,6 +7,15 @@ export class MyCloud {
 
         this.scene = scene;
 
+<<<<<<< HEAD
+=======
+        this.orbitRadius = 80;
+        this.height = 50;
+        this.size = 40;
+        this.rotationSpeed = 0.5;
+        this.opacity = 0.5;
+
+>>>>>>> master
         this.quad = new MyQuad(scene);
 
         // Lista de nuvens
@@ -48,7 +57,15 @@ export class MyCloud {
 
         for (let i = 0; i < this.clouds.length; i++) {
 
+<<<<<<< HEAD
             const cloud = this.clouds[i];
+=======
+        // Orbita em torno do eixo Y global
+        const angle = (this.scene.currentTime % 1.0) * Math.PI * 2 * this.rotationSpeed;
+        this.scene.rotate(angle, 0, 1, 0);
+        this.scene.translate(0, this.height, this.orbitRadius);
+        this.scene.scale(this.size*2.5, this.size, 1);
+>>>>>>> master
 
             this.scene.pushMatrix();
 

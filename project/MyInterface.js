@@ -23,7 +23,7 @@ export class MyInterface extends CGFinterface {
         this.gui.add(this.scene, 'displayAxis').name('Display Axis');
         
             // Slider para controlar a velocidade do tempo
-            this.gui.add(this.scene, 'timeSpeed', 0, 5)
+            this.gui.add(this.scene, 'timeSpeed', 0, 20)
                 .step(0.1)
                 .name('Time Speed');
 
