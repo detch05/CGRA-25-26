@@ -23,6 +23,20 @@ export class MyTriangle extends CGFobject {
             1, 2, 0
         ];
 
+        // Normals (facing +Z)
+        this.normals = [
+            0, 0, 1,
+            0, 0, 1,
+            0, 0, 1
+        ];
+
+        // Simple texture coordinates so lighting + texture work
+        this.texCoords = [
+            0, 0,
+            1, 0,
+            0.5, 1
+        ];
+
         //The defined indices (and corresponding vertices)
         //will be read in groups of three to draw triangles
         this.primitiveType = this.scene.gl.TRIANGLES;

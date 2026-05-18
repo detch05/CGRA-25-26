@@ -5,6 +5,7 @@ import { MyCloud } from "./modelos/MyCloud.js";
 import { MyBarn } from "./modelos/MyBarn.js";
 import { MyGround } from "./modelos/MyGround.js";
 
+
 /**
  * MyScene
  * @constructor
@@ -59,6 +60,9 @@ export class MyScene extends CGFscene {
         // BARN
         this.barn = new MyBarn(this);
 
+        // CYLINDER
+        // this.cylinder = new MyCylinder(this, 3, 5, 20, 1);
+
     }
 
     initLights() {
@@ -70,6 +74,20 @@ export class MyScene extends CGFscene {
         this.lights[0].enable();
 
         this.lights[0].update();
+
+        // Additional light focused on the barn to improve its illumination
+        this.lights[1].setPosition(5, 15, 5, 1);
+        this.lights[1].setDiffuse(0.6, 0.6, 0.55, 1.0);
+        this.lights[1].setSpecular(0.3, 0.3, 0.28, 1.0);
+        this.lights[1].enable();
+        this.lights[1].update();
+
+        // Additional light focused on the barn to improve its illumination
+        this.lights[1].setPosition(7, 7, -3, 1);
+        this.lights[1].setDiffuse(0.6, 0.6, 0.55, 1.0);
+        this.lights[1].setSpecular(0.3, 0.3, 0.28, 1.0);
+        this.lights[1].enable();
+        this.lights[1].update();
     }
 
     initCameras() {
@@ -101,18 +119,18 @@ export class MyScene extends CGFscene {
         if (this.displayAxis)
             this.axis.display();
 
-        // SKY
-        this.sky.display();
+        // // SKY
+        // this.sky.display();
 
-        // SUN
-        this.sun.display();
+        // // SUN
+        // this.sun.display();
 
-        // CLOUDS
-        this.cloud1.display();
+        // // CLOUDS
+        // this.cloud1.display();
 
-        this.cloud2.display();
+        // this.cloud2.display();
 
-        this.cloud3.display();
+        // this.cloud3.display();
 
         // // GROUND
         // this.ground.display();
