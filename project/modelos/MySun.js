@@ -36,7 +36,7 @@ export class MySun {
 
     display() {
 
-        const angle = this.scene.currentTime * Math.PI * 2;
+        const angle = (this.scene.currentTime % 1.0) * Math.PI * 2;
 
         // SOL
         this.scene.pushMatrix();
@@ -51,7 +51,7 @@ export class MySun {
         this.scene.pushMatrix();
         this.scene.rotate(angle + Math.PI, 0, 0, 1);
         this.scene.translate(0, this.orbitRadius, 0);
-        this.scene.scale(this.radius * 0.9, this.radius * 0.9, this.radius * 0.9);
+        this.scene.scale(this.radius * 0.8, this.radius * 0.8, this.radius * 0.8);
         this.scene.rotate(Math.PI/2, 1, 0, 0);
         this.moonMaterial.apply();
         this.moonSphere.display();

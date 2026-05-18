@@ -77,7 +77,7 @@ export class MyScene extends CGFscene {
     }
 
     updateLighting() {
-        const angle = this.currentTime * Math.PI * 2;
+        const angle = (this.currentTime % 1.0) * Math.PI * 2;
 
         // Match sun orbit (rotate around Z, then translate on +Y)
         const sunDist = 100;
@@ -119,7 +119,7 @@ export class MyScene extends CGFscene {
         this.lastTime = currentTime;
 
         const timeIncrement = (deltaTime / 240) * this.timeSpeed;
-        this.currentTime = (this.currentTime + timeIncrement) % 1.0;
+        this.currentTime = (this.currentTime + timeIncrement);
 
         this.updateLighting();
 

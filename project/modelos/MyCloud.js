@@ -10,7 +10,7 @@ export class MyCloud {
         this.orbitRadius = 80;
         this.height = 50;
         this.size = 40;
-        this.rotationSpeed = 1.0;
+        this.rotationSpeed = 0.5;
         this.opacity = 0.5;
 
         this.quad = new MyQuad(scene);
@@ -33,7 +33,7 @@ export class MyCloud {
         this.scene.pushMatrix();
 
         // Orbita em torno do eixo Y global
-        const angle = this.scene.currentTime * Math.PI * 2 * this.rotationSpeed;
+        const angle = (this.scene.currentTime % 1.0) * Math.PI * 2 * this.rotationSpeed;
         this.scene.rotate(angle, 0, 1, 0);
         this.scene.translate(0, this.height, this.orbitRadius);
         this.scene.scale(this.size*2.5, this.size, 1);
