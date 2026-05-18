@@ -13,28 +13,24 @@ export class MySun {
         this.sunMaterial = new CGFappearance(scene);
         this.moonMaterial = new CGFappearance(scene);
 
-        this.sunMaterial.setAmbient(1, 1, 1, 1);
-        this.sunMaterial.setDiffuse(1, 1, 1, 1);
-        this.sunMaterial.setSpecular(1, 1, 1, 1);
-        this.sunMaterial.setEmission(0.35, 0.3, 0.2, 1);
-        this.sunMaterial.setShininess(100);
-
-        this.moonMaterial.setAmbient(0.8, 0.8, 0.9, 1);
-        this.moonMaterial.setDiffuse(0.9, 0.9, 1, 1);
-        this.moonMaterial.setSpecular(0.8, 0.8, 0.9, 1);
-        this.moonMaterial.setEmission(0.08, 0.08, 0.1, 1);
-        this.moonMaterial.setShininess(80);
-
-        // Textura com sol e lua (sol na metade esquerda, lua na metade direita)
+        // SOL - brilhante, quente, auto-iluminado
+        this.sunMaterial.setAmbient(1.0, 0.9, 0.5, 1);
+        this.sunMaterial.setDiffuse(1.0, 0.85, 0.3, 1);
+        this.sunMaterial.setSpecular(1.0, 0.95, 0.6, 1);
+        this.sunMaterial.setEmission(0.9, 0.75, 0.2, 1);  // forte emissão amarela/laranja
+        this.sunMaterial.setShininess(120);
         this.sunMaterial.loadTexture("images/sun_tex.png");
+
+        // LUA - mais brilhante e visível
+        this.moonMaterial.setAmbient(0.8, 0.8, 0.85, 1);    // muito mais alto
+        this.moonMaterial.setDiffuse(0.9, 0.9, 0.95, 1);    
+        this.moonMaterial.setSpecular(0.2, 0.2, 0.25, 1);   
+        this.moonMaterial.setEmission(0.7, 0.7, 0.7, 1);  // emissão suficiente para ser visível
+        this.moonMaterial.setShininess(15);                  
         this.moonMaterial.loadTexture("images/moon_tex.png");
 
-        // Map sun and moon
-        this.sunSphere.updateTexCoords();
-        this.moonSphere.updateTexCoords();
-
         // Raio do sol/lua
-        this.radius = 8;
+        this.radius = 5;
         this.orbitRadius = 100;
     }
 
@@ -56,6 +52,7 @@ export class MySun {
         this.scene.rotate(angle + Math.PI, 0, 0, 1);
         this.scene.translate(0, this.orbitRadius, 0);
         this.scene.scale(this.radius * 0.9, this.radius * 0.9, this.radius * 0.9);
+        this.scene.rotate(Math.PI/2, 1, 0, 0);
         this.moonMaterial.apply();
         this.moonSphere.display();
         this.scene.popMatrix();
