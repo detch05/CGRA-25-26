@@ -12,7 +12,7 @@ export class MyGround extends CGFobject {
 
         this.material.setDiffuse(0.2, 0.8, 0.2, 1);
 
-        this.material.setSpecular(0,0,0,1);
+        this.material.setSpecular(0.8,0.8,0.8,1);
 
         this.material.setShininess(5);
 
@@ -59,16 +59,11 @@ export class MyGround extends CGFobject {
     display() {
 
         this.scene.pushMatrix();
-
-        // chão gigante
         this.scene.translate(0, -2, 0);
-
         this.scene.scale(50,1,50);
-
+        this.scene.rotate (Math.PI, 1,0,0);
         this.material.apply();
-
         super.display();
-
         this.scene.popMatrix();
     }
 }

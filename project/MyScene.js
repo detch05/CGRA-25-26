@@ -44,7 +44,7 @@ export class MyScene extends CGFscene {
 
         // GROUND
          this.ground = new MyGround(this);
-         
+
         // SKY
         this.sky = new MySky(this);
 
@@ -138,6 +138,8 @@ export class MyScene extends CGFscene {
         if (this.displayAxis)
             this.axis.display();
 
+        // GROUND
+        this.ground.display();
         // SKY
         this.sky.display();
 
