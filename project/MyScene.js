@@ -54,8 +54,6 @@ export class MyScene extends CGFscene {
         // CLOUD LAYER
         this.cloudLayer = new MyCloud(this);
 
-        // GROUND
-        //this.ground = new MyGround(this);
     }
 
     initLights() {
