@@ -36,7 +36,7 @@ export class MySky {
         this.scene.gl.disable(this.scene.gl.CULL_FACE);
 
         // Dome gigante
-        this.scene.scale(200, 200, 200);
+        this.scene.scale(600, 600, 600);
 
         // Update gradient based on time
         const angle = (this.scene.currentTime % 1.0) * Math.PI * 2;

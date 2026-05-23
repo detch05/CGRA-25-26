@@ -30,8 +30,8 @@ export class MySun {
         this.moonMaterial.loadTexture("images/moon_tex.png");
 
         // Raio do sol/lua
-        this.radius = 5;
-        this.orbitRadius = 100;
+        this.radius = 15;
+        this.orbitRadius = 560;
     }
 
     display() {

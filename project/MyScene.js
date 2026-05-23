@@ -94,7 +94,7 @@ export class MyScene extends CGFscene {
         this.camera = new CGFcamera(
             0.4,
             0.1,
-            500,
+            2000,
             vec3.fromValues(15, 15, 15),
             vec3.fromValues(0, 0, 0)
         );
@@ -104,7 +104,7 @@ export class MyScene extends CGFscene {
         const angle = (this.currentTime % 1.0) * Math.PI * 2;
 
         // Match sun orbit (rotate around Z, then translate on +Y)
-        const sunDist = 100;
+        const sunDist = 560;
         const sunX = -Math.sin(angle) * sunDist;
         const sunY = Math.cos(angle) * sunDist;
 
