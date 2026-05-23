@@ -156,7 +156,7 @@ export class MyGround extends CGFobject {
                 this.normals.push(nx / len, ny / len, nz / len);
 
                 // UVs repetidas pelo terreno (escala de tiling)
-                const uvScale = 20;
+                const uvScale = 10;
                 this.texCoords.push(j / N * uvScale, i / N * uvScale);
             }
         }
@@ -188,15 +188,15 @@ export class MyGround extends CGFobject {
         this.material.setDiffuse(1, 1, 1, 1);
         this.material.setSpecular(0.05, 0.05, 0.05, 1);
         this.material.setShininess(5);
-        this.material.loadTexture("images/grass.jpg");
+        this.material.loadTexture("images/ground.jpg");
         this.material.setTextureWrap('REPEAT', 'REPEAT');
 
         // Shader: usa uSampler (unit 0, padrão CGF) + blending por cor para dirt e caminho
-        this.shader = new CGFshader(
+        /*this.shader = new CGFshader(
             scene.gl,
             "shaders/ground.vert",
             "shaders/ground.frag"
-        );
+        );*/
         /*this.shader.setUniformsValues({
             uSampler:   0,
             uAmplitude: this.amplitude,
@@ -210,19 +210,19 @@ export class MyGround extends CGFobject {
     display() {
         this.scene.pushMatrix();
 
-        this.scene.setActiveShaderSimple(this.shader);
+        /*this.scene.setActiveShaderSimple(this.shader);
 
         this.shader.setUniformsValues({
         uSampler: 0,
         uAmplitude: this.amplitude,
         uPathWidth: 6.0,
         uPathBlend: 4.0,
-        });
+        });*/
 
         this.material.apply();
         super.display();
 
-        this.scene.setActiveShaderSimple(this.scene.defaultShader);
+        //this.scene.setActiveShaderSimple(this.scene.defaultShader);
 
         this.scene.popMatrix();
     }

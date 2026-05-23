@@ -3,6 +3,7 @@ import { MySky } from "./modelos/MySky.js";
 import { MySun } from "./modelos/MySun.js";
 import { MyCloud } from "./modelos/MyCloud.js";
 import { MyGround } from "./modelos/MyGround.js";
+import { MyPath } from "./modelos/MyPath.js";
 import { MyRocks } from "./modelos/MyRocks.js";
 /**
  * MyScene
@@ -43,7 +44,10 @@ export class MyScene extends CGFscene {
         this.displayAxis = true;
 
         // GROUND
-         this.ground = new MyGround(this);
+        this.ground = new MyGround(this);
+        
+        // PATH
+        this.path = new MyPath(this); 
         
         // ROCKS
         this.rocks = new MyRocks(this, this.ground, 80);
@@ -141,6 +145,9 @@ export class MyScene extends CGFscene {
 
         // GROUND
         this.ground.display();
+
+        // PATH
+        this.path.display();
 
         // ROCKS
         this.rocks.display();
