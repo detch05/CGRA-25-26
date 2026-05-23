@@ -3,7 +3,7 @@ import { MySky } from "./modelos/MySky.js";
 import { MySun } from "./modelos/MySun.js";
 import { MyCloud } from "./modelos/MyCloud.js";
 import { MyGround } from "./modelos/MyGround.js";
-
+import { MyRocks } from "./modelos/MyRocks.js";
 /**
  * MyScene
  * @constructor
@@ -44,6 +44,9 @@ export class MyScene extends CGFscene {
 
         // GROUND
          this.ground = new MyGround(this);
+        
+        // ROCKS
+        this.rocks = new MyRocks(this, this.ground, 80);
 
         // SKY
         this.sky = new MySky(this);
@@ -138,6 +141,10 @@ export class MyScene extends CGFscene {
 
         // GROUND
         this.ground.display();
+
+        // ROCKS
+        this.rocks.display();
+
         // SKY
         this.sky.display();
 

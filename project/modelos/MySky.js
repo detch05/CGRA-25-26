@@ -20,25 +20,19 @@ export class MySky {
 
         // Gradient shader (day/night)
         this.shader = new CGFshader(this.scene.gl, "shaders/sky.vert", "shaders/sky.frag");
-        this.shader.setUniformsValues({
+        /*this.shader.setUniformsValues({
             uTopColor: [0.1, 0.4, 0.9],
             uBottomColor: [0.9, 0.6, 0.3],
             uSunsetColor: [1.0, 0.5, 0.2],
             uSunsetStrength: 0.0
-        });
+        });*/
     }
 
     display() {
 
         this.scene.pushMatrix();
 
-        // Desabilitar face culling para ver interior
-        this.scene.gl.disable(this.scene.gl.CULL_FACE);
-
-        // Dome gigante
-        this.scene.scale(200, 200, 200);
-
-        // Update gradient based on time
+         // Update gradient based on time
         const angle = (this.scene.currentTime % 1.0) * Math.PI * 2;
         const dayFactor = (Math.cos(angle) + 1) / 2;
         const sunsetStrength = Math.max(0, 1 - Math.abs(dayFactor - 0.5) * 2);
@@ -60,6 +54,14 @@ export class MySky {
             bottomNight[2] + (bottomDay[2] - bottomNight[2]) * dayFactor
         ];
 
+        // Desabilitar face culling para ver interior
+        this.scene.gl.disable(this.scene.gl.CULL_FACE);
+
+        // Dome gigante
+        this.scene.scale(200, 200, 200);
+
+        this.scene.setActiveShader(this.shader);
+
         this.shader.setUniformsValues({
             uTopColor: topColor,
             uBottomColor: bottomColor,
@@ -67,7 +69,6 @@ export class MySky {
             uSunsetStrength: sunsetStrength
         });
 
-        this.scene.setActiveShader(this.shader);
         this.material.apply();
 
         this.sphere.display();
@@ -77,5 +78,9 @@ export class MySky {
         this.scene.gl.enable(this.scene.gl.CULL_FACE);
 
         this.scene.popMatrix();
+
+       
+
+        
     }
 }

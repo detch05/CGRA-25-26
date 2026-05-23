@@ -197,12 +197,12 @@ export class MyGround extends CGFobject {
             "shaders/ground.vert",
             "shaders/ground.frag"
         );
-        this.shader.setUniformsValues({
+        /*this.shader.setUniformsValues({
             uSampler:   0,
             uAmplitude: this.amplitude,
             uPathWidth: 6.0,
             uPathBlend: 4.0,
-        });
+        });*/
     }
 
     //  Display
@@ -210,11 +210,19 @@ export class MyGround extends CGFobject {
     display() {
         this.scene.pushMatrix();
 
-        this.scene.setActiveShader(this.shader);
+        this.scene.setActiveShaderSimple(this.shader);
+
+        this.shader.setUniformsValues({
+        uSampler: 0,
+        uAmplitude: this.amplitude,
+        uPathWidth: 6.0,
+        uPathBlend: 4.0,
+        });
+
         this.material.apply();
         super.display();
 
-        this.scene.setActiveShader(this.scene.defaultShader);
+        this.scene.setActiveShaderSimple(this.scene.defaultShader);
 
         this.scene.popMatrix();
     }
