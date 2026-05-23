@@ -158,11 +158,11 @@ export class MyScene extends CGFscene {
         if (this.displayAxis)
             this.axis.display();
 
-        // // SKY
-        // this.sky.display();
+        // SKY
+        this.sky.display();
 
-        // // SUN
-        // this.sun.display();
+        // SUN AND MOON
+        this.sun.display();
 
         // CLOUDS
         this.cloudLayer.display();
