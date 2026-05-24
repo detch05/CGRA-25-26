@@ -22,7 +22,7 @@ import { MyNoise } from "./MyNoise.js";
 export class MyGround extends CGFobject {
 
     constructor(scene, {
-        size       = 200,
+        size       = 600,
         segments   = 128,
         amplitude  = 8,
         noiseScale = 0.015,

@@ -22,7 +22,7 @@ export class MyPath {
 
         this.material.apply();
 
-        for(let z = -80; z <= 80; z += 8) {
+        for(let z = -300; z <= 300; z += 8) {
 
             this.scene.pushMatrix();
 

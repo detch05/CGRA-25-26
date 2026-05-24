@@ -31,8 +31,8 @@ export class MyRocks {
 
     _generateRocks(count) {
         const rocks = [];
-        const half  = 90;
-        const pathW = 12;
+        const half  = 200;
+        const pathW = 14;
 
         for (let i = 0; i < count; i++) {
             const s = i * 7 + 13;

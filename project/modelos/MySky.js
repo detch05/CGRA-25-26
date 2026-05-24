@@ -32,7 +32,13 @@ export class MySky {
 
         this.scene.pushMatrix();
 
-         // Update gradient based on time
+        // Desabilitar face culling para ver interior
+        this.scene.gl.disable(this.scene.gl.CULL_FACE);
+
+        // Dome gigante
+        this.scene.scale(600, 600, 600);
+
+        // Update gradient based on time
         const angle = (this.scene.currentTime % 1.0) * Math.PI * 2;
         const dayFactor = (Math.cos(angle) + 1) / 2;
         const sunsetStrength = Math.max(0, 1 - Math.abs(dayFactor - 0.5) * 2);
@@ -56,9 +62,6 @@ export class MySky {
 
         // Desabilitar face culling para ver interior
         this.scene.gl.disable(this.scene.gl.CULL_FACE);
-
-        // Dome gigante
-        this.scene.scale(200, 200, 200);
 
         this.scene.setActiveShader(this.shader);
 

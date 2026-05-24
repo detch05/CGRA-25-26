@@ -5,6 +5,10 @@ import { MyCloud } from "./modelos/MyCloud.js";
 import { MyGround } from "./modelos/MyGround.js";
 import { MyPath } from "./modelos/MyPath.js";
 import { MyRocks } from "./modelos/MyRocks.js";
+import { MyMountains } from "./modelos/MyMountains.js";
+import { MyBarn } from "./modelos/MyBarn.js";
+
+
 /**
  * MyScene
  * @constructor
@@ -46,6 +50,8 @@ export class MyScene extends CGFscene {
         // GROUND
         this.ground = new MyGround(this);
         
+        // MOUNTAIN
+        this.mountains = new MyMountains(this, this.ground, 16);
         // PATH
         this.path = new MyPath(this); 
         
@@ -61,6 +67,12 @@ export class MyScene extends CGFscene {
         // CLOUD LAYER
         this.cloudLayer = new MyCloud(this);
 
+        // BARN
+        this.barn = new MyBarn(this);
+
+        // CYLINDER
+        // this.cylinder = new MyCylinder(this, 3, 5, 20, 1);
+
     }
 
     initLights() {
@@ -72,6 +84,20 @@ export class MyScene extends CGFscene {
         this.lights[0].enable();
 
         this.lights[0].update();
+
+        // Additional light focused on the barn to improve its illumination
+        this.lights[1].setPosition(5, 15, 5, 1);
+        this.lights[1].setDiffuse(0.6, 0.6, 0.55, 1.0);
+        this.lights[1].setSpecular(0.3, 0.3, 0.28, 1.0);
+        this.lights[1].enable();
+        this.lights[1].update();
+
+        // Additional light focused on the barn to improve its illumination
+        this.lights[1].setPosition(7, 7, -3, 1);
+        this.lights[1].setDiffuse(0.6, 0.6, 0.55, 1.0);
+        this.lights[1].setSpecular(0.3, 0.3, 0.28, 1.0);
+        this.lights[1].enable();
+        this.lights[1].update();
     }
 
     initCameras() {
@@ -79,7 +105,7 @@ export class MyScene extends CGFscene {
         this.camera = new CGFcamera(
             0.4,
             0.1,
-            500,
+            2000,
             vec3.fromValues(15, 15, 15),
             vec3.fromValues(0, 0, 0)
         );
@@ -89,7 +115,7 @@ export class MyScene extends CGFscene {
         const angle = (this.currentTime % 1.0) * Math.PI * 2;
 
         // Match sun orbit (rotate around Z, then translate on +Y)
-        const sunDist = 100;
+        const sunDist = 560;
         const sunX = -Math.sin(angle) * sunDist;
         const sunY = Math.cos(angle) * sunDist;
 
@@ -146,19 +172,24 @@ export class MyScene extends CGFscene {
         // GROUND
         this.ground.display();
 
+        // MOUNTAINS
+        this.mountains.display();
         // PATH
         this.path.display();
-
+       
         // ROCKS
         this.rocks.display();
 
         // SKY
         this.sky.display();
 
-        // SUN
+        // SUN AND MOON
         this.sun.display();
 
         // CLOUDS
         this.cloudLayer.display();
+
+        // BARN
+        this.barn.display();
     }
 }
