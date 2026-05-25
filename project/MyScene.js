@@ -6,6 +6,7 @@ import { MyGround } from "./modelos/MyGround.js";
 import { MyPath } from "./modelos/MyPath.js";
 import { MyRocks } from "./modelos/MyRocks.js";
 import { MyMountains } from "./modelos/MyMountains.js";
+import { MyFlowers } from "./modelos/MyFlowers.js";
 import { MyBarn } from "./modelos/MyBarn.js";
 
 
@@ -52,12 +53,15 @@ export class MyScene extends CGFscene {
         
         // MOUNTAIN
         this.mountains = new MyMountains(this, this.ground, 16);
+
         // PATH
         this.path = new MyPath(this); 
         
         // ROCKS
         this.rocks = new MyRocks(this, this.ground, 80);
 
+        // FLOWERS
+        this.flowers = new MyFlowers(this, this.ground, this.rocks, 280);
         // SKY
         this.sky = new MySky(this);
 
@@ -179,6 +183,9 @@ export class MyScene extends CGFscene {
        
         // ROCKS
         this.rocks.display();
+
+        // FLOWERS
+        this.flowers.display();
 
         // SKY
         this.sky.display();
