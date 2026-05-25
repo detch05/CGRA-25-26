@@ -8,6 +8,7 @@ import { MyPath } from "./modelos/MyPath.js";
 import { MyRocks } from "./modelos/MyRocks.js";
 import { MyMountains } from "./modelos/MyMountains.js";
 import { MyBarn } from "./modelos/MyBarn.js";
+import { MyHay } from "./modelos/MyHay.js";
 
 
 /**
@@ -73,7 +74,9 @@ export class MyScene extends CGFscene {
 
         // WAGON
         this.wagon = new MyWagon(this);
-
+        
+        // BALE
+        this.hayBale = new MyHay(this); 
     }
 
     initLights() {
@@ -195,6 +198,9 @@ export class MyScene extends CGFscene {
 
         // WAGON
         this.wagon.display();
+        
+        // HAY BALE
+        this.hayBale.display();
 
     }
 }
