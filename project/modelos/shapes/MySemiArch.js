@@ -16,6 +16,7 @@ export class MySemiArch extends CGFobject {
         this.vertices = [];
         this.indices = [];
         this.normals = [];
+        this.texCoords = [];
 
         let alpha = Math.PI / this.slices;
 
@@ -32,6 +33,7 @@ export class MySemiArch extends CGFobject {
 
                 this.vertices.push(x,y,z);
                 this.normals.push(x,y,0);
+                this.texCoords.push(i / this.slices, j / this.stacks);
             }
         }
 
@@ -49,6 +51,20 @@ export class MySemiArch extends CGFobject {
 
         this.primitiveType = this.scene.gl.TRIANGLES;
         this.initGLBuffers();
+    }
+
+    /**
+     * Update texture coordinates to control tiling.
+     * repeatU / repeatV specify how many times the texture repeats along each axis.
+     */
+    updateTexCoords(repeatU = 1, repeatV = 1) {
+        this.texCoords = [];
+        for (let j = 0; j <= this.stacks; j++) {
+            for (let i = 0; i <= this.slices; i++) {
+                this.texCoords.push((i / this.slices) * repeatU, (j / this.stacks) * repeatV);
+            }
+        }
+        if (this.updateTexCoordsGLBuffers) this.updateTexCoordsGLBuffers();
     }
 
     display() {

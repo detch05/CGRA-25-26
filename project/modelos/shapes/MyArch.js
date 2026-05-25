@@ -22,6 +22,7 @@ export class MyBow extends CGFobject {
         this.vertices = [];
         this.indices = [];
         this.normals = [];
+        this.texCoords = [];
 
         let alpha = 2*Math.PI / this.slices;
 
@@ -40,6 +41,7 @@ export class MyBow extends CGFobject {
                 this.vertices.push(x,y,z);
 
                 this.normals.push(x,y,0);
+                this.texCoords.push(i / this.slices, j / this.stacks);
             }
         }
 

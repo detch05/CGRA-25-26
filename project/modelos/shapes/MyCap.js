@@ -16,12 +16,14 @@ export class MyCap extends CGFobject {
         this.vertices = [];
         this.indices = [];
         this.normals = [];
+        this.texCoords = [];
 
         const alpha = (2 * Math.PI) / this.slices;
 
         if (this.innerRadius <= 0) {
             this.vertices.push(0, 0, 0);
             this.normals.push(0, 0, this.normalSign);
+            this.texCoords.push(0.5, 0.5);
 
             for (let i = 0; i <= this.slices; i++) {
                 const ang = i * alpha;
@@ -30,6 +32,7 @@ export class MyCap extends CGFobject {
 
                 this.vertices.push(x, y, 0);
                 this.normals.push(0, 0, this.normalSign);
+                this.texCoords.push((x / (2 * this.outerRadius)) + 0.5, (y / (2 * this.outerRadius)) + 0.5);
             }
 
             for (let i = 1; i <= this.slices; i++) {
@@ -47,6 +50,7 @@ export class MyCap extends CGFobject {
 
                 this.vertices.push(cos * this.outerRadius, sin * this.outerRadius, 0);
                 this.normals.push(0, 0, this.normalSign);
+                this.texCoords.push((cos * 0.5) + 0.5, (sin * 0.5) + 0.5);
             }
 
             const innerStart = this.vertices.length / 3;
@@ -58,6 +62,7 @@ export class MyCap extends CGFobject {
 
                 this.vertices.push(cos * this.innerRadius, sin * this.innerRadius, 0);
                 this.normals.push(0, 0, this.normalSign);
+                this.texCoords.push((cos * 0.5 * (this.innerRadius / this.outerRadius)) + 0.5, (sin * 0.5 * (this.innerRadius / this.outerRadius)) + 0.5);
             }
 
             for (let i = 0; i < this.slices; i++) {

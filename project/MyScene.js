@@ -4,7 +4,7 @@ import { MySun } from "./modelos/MySun.js";
 import { MyCloud } from "./modelos/MyCloud.js";
 import { MyBarn } from "./modelos/MyBarn.js";
 import { MyGround } from "./modelos/MyGround.js";
-import { MyWagonBack } from "./modelos/shapes/MyWagonBack.js";
+import { MyWagon } from "./modelos/MyWagon.js";
 
 
 /**
@@ -61,7 +61,7 @@ export class MyScene extends CGFscene {
         this.barn = new MyBarn(this);
 
         // WAGON
-        this.wagon = new MyWagonBack(this);
+        this.wagon = new MyWagon(this);
 
     }
 

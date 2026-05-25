@@ -97,6 +97,15 @@ export class MyUnitCube extends CGFobject {
             
         ];
 
+        this.texCoords = [
+            0, 1, 0, 0, 1, 0, 1, 1, // back
+            0, 1, 0, 0, 1, 0, 1, 1, // front
+            0, 1, 0, 0, 1, 0, 1, 1, // top
+            0, 1, 0, 0, 1, 0, 1, 1, // bottom
+            0, 1, 0, 0, 1, 0, 1, 1, // left
+            0, 1, 0, 0, 1, 0, 1, 1  // right
+        ];
+
         // this.normals = [];
         // for (var i = 0; i < this.vertices.length; i ++) {
         //     if (this.vertices[i] === 1) this.normals.push(1);
