@@ -4,6 +4,7 @@ import { MySun } from "./modelos/MySun.js";
 import { MyCloud } from "./modelos/MyCloud.js";
 import { MyBarn } from "./modelos/MyBarn.js";
 import { MyGround } from "./modelos/MyGround.js";
+import { MyHay } from "./modelos/MyHay.js";
 
 
 /**
@@ -58,10 +59,9 @@ export class MyScene extends CGFscene {
 
         // BARN
         this.barn = new MyBarn(this);
-
-        // CYLINDER
-        // this.cylinder = new MyCylinder(this, 3, 5, 20, 1);
-
+        
+        // BALE
+        this.hayBale = new MyHay(this); 
     }
 
     initLights() {
@@ -169,5 +169,9 @@ export class MyScene extends CGFscene {
 
         // BARN
         this.barn.display();
+
+        // HAY BALE
+        this.hayBale.display();
+
     }
 }
