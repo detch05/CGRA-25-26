@@ -1,5 +1,5 @@
 import { CGFappearance } from "../../lib/CGF.js";
-import { MyQuad } from "./MyQuad.js";
+import { MyQuad } from "./shapes/MyQuad.js";
 
 export class MyCloud {
 
@@ -62,6 +62,7 @@ export class MyCloud {
             this.scene.rotate(angle, 0, 1, 0);
             this.scene.translate(0, cloud.height, cloud.radius);
             this.scene.scale(cloud.scaleX * 40, cloud.scaleY * 40, 1);
+            this.scene.translate(-0.5, -0.5, 0);
 
             this.material.setEmission(1, 1, 1, cloud.opacity);
             this.material.apply();
