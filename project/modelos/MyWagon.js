@@ -4,7 +4,7 @@ import { CGFobjModel } from "../../lib/extra/CGFobjModel.js";
 
 
 export class MyWagon extends CGFobject {
-    constructor(scene) {
+    constructor(scene, x = -6, y = 0, z = 6) {
         super(scene);
         this.WagonBack = new MyWagonBack(scene);
         this.horse = new CGFobjModel(scene, "objects/horse.obj");
@@ -18,14 +18,94 @@ export class MyWagon extends CGFobject {
         this.horseAppearance.setShininess(20);
         this.horseAppearance.setTextureWrap("REPEAT", "REPEAT");
 
+        this.position = { x, y, z };
+        this.orientation = 0;
+        this.speed = 0;
+        this.maxSpeed = 6;
+        this.accel = 4;
+        this.brake = 7;
+        this.drag = 2;
+        this.steerAngle = 0;
+        this.maxSteer = 0.5;
+        this.steerSpeed = 2.5;
+        this.wheelBase = 1.4;
+        this.wheelRadius = 0.3;
+        this.wheelSpin = 0;
+        this.rearAxleOffset = { x: -1.25, y: 0.37, z: 0.76 };
+        this.groundOffset = 0.4;
+        this.lastUpdateTime = 0;
+    }
 
+    update(t) {
+        if (!this.scene.gui || !this.scene.gui.isKeyPressed) {
+            return;
+        }
+        if (!this.lastUpdateTime) {
+            this.lastUpdateTime = t;
+            return;
+        }
+
+        const dt = (t - this.lastUpdateTime) / 1000;
+        this.lastUpdateTime = t;
+
+        const forward = this.scene.gui.isKeyPressed("KeyW");
+        const brake = this.scene.gui.isKeyPressed("KeyS");
+        const left = this.scene.gui.isKeyPressed("KeyA");
+        const right = this.scene.gui.isKeyPressed("KeyD");
+
+        if (forward) {
+            this.speed = Math.min(this.speed + this.accel * dt, this.maxSpeed);
+        }
+        if (brake) {
+            this.speed = Math.max(this.speed - this.brake * dt, 0);
+        }
+        if (!forward && !brake) {
+            this.speed = Math.max(this.speed - this.drag * dt, 0);
+        }
+
+        if (left) {
+            this.steerAngle = Math.min(this.steerAngle + this.steerSpeed * dt, this.maxSteer);
+        } else if (right) {
+            this.steerAngle = Math.max(this.steerAngle - this.steerSpeed * dt, -this.maxSteer);
+        } else if (this.steerAngle !== 0) {
+            const returnStep = this.steerSpeed * dt;
+            if (this.steerAngle > 0) {
+                this.steerAngle = Math.max(0, this.steerAngle - returnStep);
+            } else {
+                this.steerAngle = Math.min(0, this.steerAngle + returnStep);
+            }
+        }
+
+        const turnRate = (this.speed / this.wheelBase) * Math.tan(this.steerAngle);
+        this.orientation += turnRate * dt;
+
+        const dirX = Math.sin(this.orientation);
+        const dirZ = Math.cos(this.orientation);
+        const distance = this.speed * dt;
+
+        this.position.x += dirX * distance;
+        this.position.z += dirZ * distance;
+
+        if (this.wheelRadius > 0) {
+            this.wheelSpin -= distance / this.wheelRadius;
+        }
+
+        this.WagonBack.setSteerAngle(this.steerAngle);
+        this.WagonBack.setWheelSpin(this.wheelSpin);
+
+        if (this.scene.ground && this.scene.ground.getHeightAt) {
+            const groundY = this.scene.ground.getHeightAt(this.position.x, this.position.z);
+            this.position.y = groundY + this.groundOffset;
+        }
     }
 
     display() {
         this.scene.pushMatrix();
+        this.scene.translate(this.position.x, this.position.y, this.position.z);
+        this.scene.rotate(this.orientation, 0, 1, 0);
         this.scene.scale(0.5, 0.5, 0.5);
-        this.scene.translate(-6, 0, 6);
         this.scene.rotate(-Math.PI/2, 0, 1, 0);
+        this.scene.translate(-this.rearAxleOffset.x, -this.rearAxleOffset.y, -this.rearAxleOffset.z);
 
         // wagon back
         this.scene.pushMatrix();

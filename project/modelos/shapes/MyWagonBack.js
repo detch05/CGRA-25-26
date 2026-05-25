@@ -10,6 +10,9 @@ export class MyWagonBack extends CGFobject {
         this.cube = new MyUnitCube(scene);
         this.semiarch = new MySemiArch(scene);
 
+        this.steerAngle = 0;
+        this.wheelSpin = 0;
+
         // texture
         this.wagonWood = new CGFappearance(scene);
         this.wagonWood.loadTexture("./images/wagon_wood.jpg");
@@ -23,6 +26,14 @@ export class MyWagonBack extends CGFobject {
         this.amarraAppearance.loadTexture("./images/couro.jpg");
         this.amarraAppearance.setTextureWrap("REPEAT", "REPEAT");
 
+    }
+
+    setSteerAngle(angle) {
+        this.steerAngle = angle;
+    }
+
+    setWheelSpin(angle) {
+        this.wheelSpin = angle;
     }
 
     display() {
@@ -91,33 +102,39 @@ export class MyWagonBack extends CGFobject {
         this.scene.scale(0.1, 0.1, 2.5);
         this.scene.scale(6, 6, 0.2);
         this.scene.translate(0.1, 0.1, -0.15);
+        this.scene.rotate(-this.wheelSpin, 0, 0, 1);
         this.wagonWood.apply();
         this.wheel.display();
         this.scene.popMatrix();
-
+        
         this.scene.pushMatrix();
         this.scene.translate(2.4, -0.1, -0.2);
         this.scene.scale(0.1, 0.1, 2.5);
         this.scene.scale(6, 6, 0.2);
         this.scene.translate(0.1, 0.1, 4.95);
+        this.scene.rotate(-this.wheelSpin, 0, 0, 1);
         this.wagonWood.apply();
         this.wheel.display();
         this.scene.popMatrix();
-
+        
         this.scene.pushMatrix();
         this.scene.translate(2.4, -0.1, -0.2);
         this.scene.scale(0.1, 0.1, 2.5);
         this.scene.scale(6, 6, 0.2);
         this.scene.translate(-3.5, 0.1, -0.15);
+        this.scene.rotate(this.steerAngle, 0, 1, 0);
+        this.scene.rotate(-this.wheelSpin, 0, 0, 1);
         this.wagonWood.apply();
         this.wheel.display();
         this.scene.popMatrix();
-
+        
         this.scene.pushMatrix();
         this.scene.translate(2.4, -0.1, -0.2);
         this.scene.scale(0.1, 0.1, 2.5);
         this.scene.scale(6, 6, 0.2);
         this.scene.translate(-3.5, 0.1, 4.95);
+        this.scene.rotate(this.steerAngle, 0, 1, 0);
+        this.scene.rotate(-this.wheelSpin, 0, 0, 1);
         this.wagonWood.apply();
         this.wheel.display();
         this.scene.popMatrix();

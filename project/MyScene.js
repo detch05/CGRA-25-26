@@ -1,4 +1,5 @@
 import { CGFscene, CGFcamera, CGFaxis } from "../lib/CGF.js";
+import { MyInterface } from "./MyInterface.js";
 import { MySky } from "./modelos/MySky.js";
 import { MySun } from "./modelos/MySun.js";
 import { MyCloud } from "./modelos/MyCloud.js";
@@ -61,22 +62,25 @@ export class MyScene extends CGFscene {
         this.rocks = new MyRocks(this, this.ground, 80);
 
         // SKY
-        this.sky = new MySky(this);
+        //this.sky = new MySky(this);
 
         // SUN
-        this.sun = new MySun(this);
+        //this.sun = new MySun(this);
 
         // CLOUD LAYER
-        this.cloudLayer = new MyCloud(this);
+        //this.cloudLayer = new MyCloud(this);
 
         // BARN
-        this.barn = new MyBarn(this);
+        //this.barn = new MyBarn(this);
+        
+        // BALE
+        //this.hayBale = new MyHay(this); 
 
         // WAGON
         this.wagon = new MyWagon(this);
-        
-        // BALE
-        this.hayBale = new MyHay(this); 
+
+        this.setUpdatePeriod(16);
+        // -----
     }
 
     initLights() {
@@ -145,6 +149,14 @@ export class MyScene extends CGFscene {
         this.lights[0].setDiffuse(r * intensity, g * intensity, b * intensity, 1.0);
         this.lights[0].update();
     }
+
+    update(t)
+    {
+        if (this.wagon && this.wagon.update) {
+            this.wagon.update(t);
+        }
+    }
+
     display() {
 
         // Clear buffers
@@ -185,22 +197,22 @@ export class MyScene extends CGFscene {
         this.rocks.display();
 
         // SKY
-        this.sky.display();
+        if (this.sky) this.sky.display();
 
         // SUN AND MOON
-        this.sun.display();
+        if (this.sun) this.sun.display();
 
         // CLOUDS
-        this.cloudLayer.display();
+        if (this.cloudLayer) this.cloudLayer.display();
 
         // BARN
-        this.barn.display();
+        if (this.barn) this.barn.display();
 
         // WAGON
-        this.wagon.display();
+        if (this.wagon) this.wagon.display();
         
         // HAY BALE
-        this.hayBale.display();
+        if (this.hayBale) this.hayBale.display();
 
     }
 }

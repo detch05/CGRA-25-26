@@ -27,7 +27,27 @@ export class MyInterface extends CGFinterface {
                 .step(0.1)
                 .name('Time Speed');
 
+            this.initKeys();
+
         
         return true;
+    }
+
+    initKeys() {
+        this.scene.gui = this; 
+        this.activeKeys = {};
+        this.processKeyboard = function () {};
+    }
+
+    processKeyDown(event) {
+        this.activeKeys[event.code] = true;
+    }
+
+    processKeyUp(event) {
+        this.activeKeys[event.code] = false;
+    }
+
+    isKeyPressed(keyCode) {
+        return this.activeKeys[keyCode] || false;
     }
 }
