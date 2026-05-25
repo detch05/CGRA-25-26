@@ -3,6 +3,7 @@ import { MySky } from "./modelos/MySky.js";
 import { MySun } from "./modelos/MySun.js";
 import { MyCloud } from "./modelos/MyCloud.js";
 import { MyGround } from "./modelos/MyGround.js";
+import { MyWagon } from "./modelos/MyWagon.js";
 import { MyPath } from "./modelos/MyPath.js";
 import { MyRocks } from "./modelos/MyRocks.js";
 import { MyMountains } from "./modelos/MyMountains.js";
@@ -70,8 +71,8 @@ export class MyScene extends CGFscene {
         // BARN
         this.barn = new MyBarn(this);
 
-        // CYLINDER
-        // this.cylinder = new MyCylinder(this, 3, 5, 20, 1);
+        // WAGON
+        this.wagon = new MyWagon(this);
 
     }
 
@@ -190,6 +191,18 @@ export class MyScene extends CGFscene {
         this.cloudLayer.display();
 
         // BARN
+        this.pushMatrix();
+        this.rotate(-Math.PI/2, 0, 1, 0);
         this.barn.display();
+        this.popMatrix();
+
+        // WAGON
+        this.pushMatrix();
+        this.scale(0.5, 0.5, 0.5);
+        this.translate(-6, 0, 6);
+        this.rotate(-Math.PI/2, 0, 1, 0);
+        this.wagon.display();
+        this.popMatrix();
+
     }
 }
