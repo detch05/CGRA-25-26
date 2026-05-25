@@ -4,7 +4,7 @@ import { MySun } from "./modelos/MySun.js";
 import { MyCloud } from "./modelos/MyCloud.js";
 import { MyBarn } from "./modelos/MyBarn.js";
 import { MyGround } from "./modelos/MyGround.js";
-import { MyWheel } from "./modelos/shapes/MyWheel.js";
+import { MyWagonBack } from "./modelos/shapes/MyWagonBack.js";
 
 
 /**
@@ -60,8 +60,8 @@ export class MyScene extends CGFscene {
         // BARN
         this.barn = new MyBarn(this);
 
-        // WHEEL
-        this.wheel = new MyWheel(this);
+        // WAGON
+        this.wagon = new MyWagonBack(this);
 
     }
 
@@ -170,8 +170,9 @@ export class MyScene extends CGFscene {
 
         // // BARN
         // this.barn.display();
-
-        this.wheel.display();
+        
+        // WAGON
+        this.wagon.display();
 
     }
 }
