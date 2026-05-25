@@ -191,18 +191,10 @@ export class MyScene extends CGFscene {
         this.cloudLayer.display();
 
         // BARN
-        this.pushMatrix();
-        this.rotate(-Math.PI/2, 0, 1, 0);
         this.barn.display();
-        this.popMatrix();
 
         // WAGON
-        this.pushMatrix();
-        this.scale(0.5, 0.5, 0.5);
-        this.translate(-6, 0, 6);
-        this.rotate(-Math.PI/2, 0, 1, 0);
         this.wagon.display();
-        this.popMatrix();
 
     }
 }

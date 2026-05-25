@@ -22,6 +22,11 @@ export class MyWagon extends CGFobject {
     }
 
     display() {
+        this.scene.pushMatrix();
+        this.scene.scale(0.5, 0.5, 0.5);
+        this.scene.translate(-6, 0, 6);
+        this.scene.rotate(-Math.PI/2, 0, 1, 0);
+
         // wagon back
         this.scene.pushMatrix();
         this.scene.translate(0, 0.78, 0);
@@ -37,6 +42,8 @@ export class MyWagon extends CGFobject {
         this.scene.rotate(Math.PI/2, 0, 1, 0);
         this.horseAppearance.apply();
         this.horse.display();
+        this.scene.popMatrix();
+
         this.scene.popMatrix();
     }
 }
