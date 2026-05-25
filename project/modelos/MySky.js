@@ -1,5 +1,5 @@
 import { CGFappearance, CGFshader } from "../../lib/CGF.js";
-import { MySphere } from "./MySphere.js";
+import { MySphere } from "./shapes/MySphere.js";
 
 export class MySky {
 

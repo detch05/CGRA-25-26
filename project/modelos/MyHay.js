@@ -32,10 +32,10 @@ export class MyHay {
     display() {
 
         this.scene.pushMatrix();
-        this.scene.translate(0, 0, 10);
+        this.scene.translate(0, 0, 0);
 
         this.hayShader.setUniformsValues({
-            uTime: this.scene.currentTime * Math.PI * 2
+            uTime: this.scene.currentTime * Math.PI * 2 * 100
         });
         this.scene.setActiveShader(this.hayShader);
         this.hayMaterial.apply();
