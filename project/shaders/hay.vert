@@ -13,13 +13,12 @@ varying vec3 vNormal;
 varying vec3 vPosition;
 
 void main() {
-    float wave = sin(uTime + aVertexPosition.x * 4.0 + aVertexPosition.z * 4.0);
-    vec3 displaced = aVertexPosition + aVertexNormal * (wave * uWindStrength);
-
-    vec4 viewPos = uMVMatrix * vec4(displaced, 1.0);
-    vPosition = viewPos.xyz;
+    vec4 viewPos = uMVMatrix * vec4(aVertexPosition, 1.0);
+    float wave = sin(uTime + viewPos.x * 4.0 + viewPos.z * 4.0);
+    vec3 displacedView = viewPos.xyz + vec3(0.0, wave * uWindStrength, 0.0);
+    vPosition = displacedView;
     vNormal = normalize((uNMatrix * vec4(aVertexNormal, 0.0)).xyz);
     vTextureCoord = aTextureCoord;
 
-    gl_Position = uPMatrix * viewPos;
+    gl_Position = uPMatrix * vec4(displacedView, 1.0);
 }

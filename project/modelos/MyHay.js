@@ -35,7 +35,7 @@ export class MyHay {
         this.scene.translate(0, 0, 0);
 
         this.hayShader.setUniformsValues({
-            uTime: this.scene.currentTime * Math.PI * 2 * 100
+            uTime: this.scene.currentTime * Math.PI * 2 * 40
         });
         this.scene.setActiveShader(this.hayShader);
         this.hayMaterial.apply();
