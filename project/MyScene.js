@@ -54,7 +54,7 @@ export class MyScene extends CGFscene {
         // ROCKS
         this.rocks = new MyRocks(this, this.ground, 80);
         // GRASS
-        this.grass = new MyGrass(this, this.ground,this.rocks, 500);
+        this.grass = new MyGrass(this, this.ground,this.rocks, 260);
         // FLOWERS
         this.flowers = new MyFlowers(this, this.ground, this.rocks, 280);
         // SKY
