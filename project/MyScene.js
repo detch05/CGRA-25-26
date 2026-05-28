@@ -51,15 +51,15 @@ export class MyScene extends CGFscene {
         this.displayAxis = true;
 
         // GROUND
-        this.ground = new MyGround(this);
+        //this.ground = new MyGround(this);
         
         // MOUNTAIN
-        this.mountains = new MyMountains(this, this.ground, 16);
+        //this.mountains = new MyMountains(this, this.ground, 16);
         // PATH
-        this.path = new MyPath(this); 
+        //this.path = new MyPath(this); 
         
         // ROCKS
-        this.rocks = new MyRocks(this, this.ground, 80);
+        //this.rocks = new MyRocks(this, this.ground, 80);
 
         // SKY
         //this.sky = new MySky(this);
@@ -186,15 +186,15 @@ export class MyScene extends CGFscene {
             this.axis.display();
 
         // GROUND
-        this.ground.display();
+        if (this.ground) this.ground.display();
 
         // MOUNTAINS
-        this.mountains.display();
+        if (this.mountains) this.mountains.display();
         // PATH
-        this.path.display();
-       
+        if (this.path) this.path.display();
+
         // ROCKS
-        this.rocks.display();
+        if (this.rocks) this.rocks.display();
 
         // SKY
         if (this.sky) this.sky.display();

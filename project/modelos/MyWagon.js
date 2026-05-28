@@ -26,7 +26,7 @@ export class MyWagon extends CGFobject {
         this.brake = 7;
         this.drag = 2;
         this.steerAngle = 0;
-        this.maxSteer = 0.5;
+        this.maxSteer = 0.3;
         this.steerSpeed = 2.5;
         this.wheelBase = 1.4;
         this.wheelRadius = 0.3;
@@ -117,8 +117,19 @@ export class MyWagon extends CGFobject {
 
         // horse
         this.scene.pushMatrix();
-        this.scene.translate(2.31, 0, -1.15);
+        this.scene.translate(2.2, 0, 0);
         this.scene.scale(0.12, 0.12, 0.12);
+
+        if (this.steerAngle > 0) {
+            this.scene.translate(-2, 0, -6);
+            this.scene.rotate(this.steerAngle, 0, 1, 0);
+        } else if (this.steerAngle < 0) {
+            this.scene.translate(-2, 0, 6);
+            this.scene.rotate(this.steerAngle, 0, 1, 0);
+        }
+
+        //this.scene.rotate(this.steerAngle, 0, 1, 0);
+
         this.scene.rotate(Math.PI/2, 0, 1, 0);
         this.horseAppearance.apply();
         this.horse.display();
