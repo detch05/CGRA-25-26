@@ -50,16 +50,17 @@ export class MyScene extends CGFscene {
         this.lastTime = Date.now();
         this.displayAxis = true;
 
-        // GROUND
-        //this.ground = new MyGround(this);
+        //GROUND
+        this.ground = new MyGround(this);
         
-        // MOUNTAIN
-        //this.mountains = new MyMountains(this, this.ground, 16);
-        // PATH
-        //this.path = new MyPath(this); 
+        //MOUNTAIN
+        this.mountains = new MyMountains(this, this.ground, 16);
+
+        //PATH
+        this.path = new MyPath(this); 
         
-        // ROCKS
-        //this.rocks = new MyRocks(this, this.ground, 80);
+        //ROCKS
+        this.rocks = new MyRocks(this, this.ground, 80);
 
         // SKY
         //this.sky = new MySky(this);
