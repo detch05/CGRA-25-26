@@ -56,6 +56,17 @@ export class MyWagon extends CGFobject {
         return true;
     }
 
+    hasHay() {
+        return this.carriedHay.length > 0;
+    }
+
+    dropHay() {
+        if (!this.carriedHay.length) {
+            return null;
+        }
+        return this.carriedHay.shift();
+    }
+
     update(t) {
         if (!this.scene.gui || !this.scene.gui.isKeyPressed) {
             return;

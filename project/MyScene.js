@@ -1,4 +1,4 @@
-import { CGFscene, CGFcamera, CGFaxis } from "../lib/CGF.js";
+import { CGFscene, CGFcamera, CGFaxis, CGFappearance } from "../lib/CGF.js";
 import { MyInterface } from "./MyInterface.js";
 import { MySky } from "./modelos/MySky.js";
 import { MySun } from "./modelos/MySun.js";
@@ -10,6 +10,7 @@ import { MyRocks } from "./modelos/MyRocks.js";
 import { MyMountains } from "./modelos/MyMountains.js";
 import { MyBarn } from "./modelos/MyBarn.js";
 import { MyHay } from "./modelos/MyHay.js";
+import { MyCap } from "./modelos/shapes/MyCap.js";
 
 
 /**
@@ -51,6 +52,7 @@ export class MyScene extends CGFscene {
         this.displayAxis = true;
         this.pickKeyHeld = false;
         this.pickupRadius = 3.0;
+        this.dropKeyHeld = false;
 
         //GROUND
         this.ground = new MyGround(this);
@@ -65,16 +67,25 @@ export class MyScene extends CGFscene {
         this.rocks = new MyRocks(this, this.ground, 80);
 
         // SKY
-        //this.sky = new MySky(this);
+        this.sky = new MySky(this);
 
         // SUN
-        //this.sun = new MySun(this);
+        this.sun = new MySun(this);
 
         // CLOUD LAYER
-        //this.cloudLayer = new MyCloud(this);
+        this.cloudLayer = new MyCloud(this);
 
         // BARN
-        //this.barn = new MyBarn(this);
+        this.barn = new MyBarn(this);
+        this.barnPosition = { x: 4.5, y: 0, z: 0 };
+        this.barnRotation = -Math.PI / 2;
+
+        this.dropZoneLocalCenter = { x: 2.0, z: 1.2 };
+        this.dropZoneRadius = 2.5;
+        this.dropZoneCenter = { x: 2.5, z: 2 };
+
+        this.dropZoneMesh = new MyCap(this, 64, 1.0, 0.7, 1);
+        this.dropZoneMaterial = this._createDropZoneMaterial();
         
         // BALE
         this.hayBales = this._createHayBales(4, 30);
@@ -84,6 +95,25 @@ export class MyScene extends CGFscene {
 
         this.setUpdatePeriod(16);
         // -----
+    }
+
+    _createDropZoneMaterial() {
+        const mat = new CGFappearance(this);
+        mat.setAmbient(0.05, 0.25, 0.05, 0.7);
+        mat.setDiffuse(0.1, 0.6, 0.1, 0.7);
+        mat.setSpecular(0.0, 0.0, 0.0, 0.0);
+        mat.setEmission(0.0, 0.4, 0.0, 0.7);
+        mat.setShininess(1);
+        return mat;
+    }
+
+    _barnLocalToWorld(localX, localZ) {
+        const cos = Math.cos(this.barnRotation);
+        const sin = Math.sin(this.barnRotation);
+        return {
+            x: this.barnPosition.x + localX * cos + localZ * sin,
+            z: this.barnPosition.z - localX * sin + localZ * cos
+        };
     }
 
     _createHayBales(count, maxRadius) {
@@ -175,6 +205,7 @@ export class MyScene extends CGFscene {
         }
 
         this._handlePickupInput();
+        this._handleDropInput();
     }
 
     _handlePickupInput() {
@@ -188,6 +219,19 @@ export class MyScene extends CGFscene {
         }
 
         this.pickKeyHeld = pickPressed;
+    }
+
+    _handleDropInput() {
+        if (!this.gui || !this.gui.isKeyPressed) {
+            return;
+        }
+
+        const dropPressed = this.gui.isKeyPressed("KeyL");
+        if (dropPressed && !this.dropKeyHeld) {
+            this._tryDropHay();
+        }
+
+        this.dropKeyHeld = dropPressed;
     }
 
     _tryPickupHay() {
@@ -224,6 +268,26 @@ export class MyScene extends CGFscene {
         }
 
         this.hayBales.splice(closestIndex, 0, pickedHay);
+    }
+
+    _isWagonInDropZone() {
+        if (!this.wagon || !this.dropZoneCenter) {
+            return false;
+        }
+        const dx = this.wagon.position.x - this.dropZoneCenter.x;
+        const dz = this.wagon.position.z - this.dropZoneCenter.z;
+        return (dx * dx + dz * dz) <= (this.dropZoneRadius * this.dropZoneRadius);
+    }
+
+    _tryDropHay() {
+        if (!this.wagon || !this.wagon.hasHay || !this.wagon.hasHay()) {
+            return;
+        }
+        if (!this._isWagonInDropZone()) {
+            return;
+        }
+
+        this.wagon.dropHay();
     }
 
     display() {
@@ -275,7 +339,37 @@ export class MyScene extends CGFscene {
         if (this.cloudLayer) this.cloudLayer.display();
 
         // BARN
-        if (this.barn) this.barn.display();
+        if (this.barn) {
+            this.pushMatrix();
+            this.translate(this.barnPosition.x, this.barnPosition.y, this.barnPosition.z);
+            this.barn.display();
+            this.popMatrix();
+        }
+
+        if (this.dropZoneMesh && this.dropZoneMaterial) {
+            const zoneY = this.ground.getHeightAt(this.dropZoneCenter.x, this.dropZoneCenter.z) + 0.051;
+            const inZone = this._isWagonInDropZone();
+
+            this.pushMatrix();
+            this.translate(this.dropZoneCenter.x, zoneY, this.dropZoneCenter.z);
+            this.rotate(-Math.PI / 2, 1, 0, 0);
+            this.scale(this.dropZoneRadius, this.dropZoneRadius, this.dropZoneRadius);
+
+            if (inZone) {
+                this.dropZoneMaterial.setEmission(0.0, 0.8, 0.0, 0.85);
+                this.dropZoneMaterial.setDiffuse(0.2, 0.9, 0.2, 0.85);
+            } else {
+                this.dropZoneMaterial.setEmission(0.0, 0.4, 0.0, 0.7);
+                this.dropZoneMaterial.setDiffuse(0.1, 0.6, 0.1, 0.7);
+            }
+
+            this.gl.enable(this.gl.BLEND);
+            this.gl.blendFunc(this.gl.SRC_ALPHA, this.gl.ONE_MINUS_SRC_ALPHA);
+            this.dropZoneMaterial.apply();
+            this.dropZoneMesh.display();
+            this.gl.disable(this.gl.BLEND);
+            this.popMatrix();
+        }
 
         // WAGON
         if (this.wagon) this.wagon.display();
