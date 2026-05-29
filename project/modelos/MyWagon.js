@@ -34,6 +34,26 @@ export class MyWagon extends CGFobject {
         this.rearAxleOffset = { x: -1.25, y: 0.37, z: 0.76 };
         this.groundOffset = 0.4;
         this.lastUpdateTime = 0;
+
+        this.carriedHay = [];
+        this.maxHay = 2;
+        this.haySlots = [
+            { x: 1.0, y: 0.2, z: 0.6 },
+            { x: 1.8, y: 0.2, z: 1.4 }
+        ];
+        this.hayScale = 1;
+    }
+
+    canCarryHay() {
+        return this.carriedHay.length < this.maxHay;
+    }
+
+    addHay(hay) {
+        if (!this.canCarryHay()) {
+            return false;
+        }
+        this.carriedHay.push(hay);
+        return true;
     }
 
     update(t) {
@@ -114,6 +134,26 @@ export class MyWagon extends CGFobject {
         this.scene.scale(1.1, 1.1, 1.1);
         this.WagonBack.display();
         this.scene.popMatrix();
+
+        if (this.carriedHay.length) {
+            const slotCount = Math.min(this.carriedHay.length, this.haySlots.length);
+            this.scene.pushMatrix();
+            this.scene.translate(0, 0.78, 0);
+            this.scene.rotate(Math.PI, 0, 1, 0);
+            this.scene.scale(1.1, 1.1, 1.1);
+            this.scene.translate(0, 0, -1.05);
+
+            for (let i = 0; i < slotCount; i++) {
+                const slot = this.haySlots[i];
+                this.scene.pushMatrix();
+                this.scene.translate(slot.x, slot.y, slot.z);
+                this.scene.scale(this.hayScale, this.hayScale, this.hayScale);
+                this.carriedHay[i].displayAt(0, 0, 0);
+                this.scene.popMatrix();
+            }
+
+            this.scene.popMatrix();
+        }
 
         // horse
         this.scene.pushMatrix();

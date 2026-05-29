@@ -49,6 +49,8 @@ export class MyScene extends CGFscene {
         this.timeSpeed = 1;    // Time speed multiplier
         this.lastTime = Date.now();
         this.displayAxis = true;
+        this.pickKeyHeld = false;
+        this.pickupRadius = 3.0;
 
         //GROUND
         this.ground = new MyGround(this);
@@ -75,13 +77,28 @@ export class MyScene extends CGFscene {
         //this.barn = new MyBarn(this);
         
         // BALE
-        //this.hayBale = new MyHay(this); 
+        this.hayBales = this._createHayBales(4, 30);
 
         // WAGON
         this.wagon = new MyWagon(this);
 
         this.setUpdatePeriod(16);
         // -----
+    }
+
+    _createHayBales(count, maxRadius) {
+        const bales = [];
+
+        for (let i = 0; i < count; i++) {
+            const angle = Math.random() * Math.PI * 2;
+            const radius = Math.sqrt(Math.random()) * maxRadius;
+            const x = Math.cos(angle) * radius;
+            const z = Math.sin(angle) * radius;
+            const y = this.ground.getHeightAt(x, z);
+            bales.push(new MyHay(this, x, y, z));
+        }
+
+        return bales;
     }
 
     initLights() {
@@ -156,6 +173,57 @@ export class MyScene extends CGFscene {
         if (this.wagon && this.wagon.update) {
             this.wagon.update(t);
         }
+
+        this._handlePickupInput();
+    }
+
+    _handlePickupInput() {
+        if (!this.gui || !this.gui.isKeyPressed) {
+            return;
+        }
+
+        const pickPressed = this.gui.isKeyPressed("KeyP");
+        if (pickPressed && !this.pickKeyHeld) {
+            this._tryPickupHay();
+        }
+
+        this.pickKeyHeld = pickPressed;
+    }
+
+    _tryPickupHay() {
+        if (!this.wagon || !this.hayBales || !this.hayBales.length) {
+            return;
+        }
+
+        if (!this.wagon.canCarryHay || !this.wagon.canCarryHay()) {
+            return;
+        }
+
+        const wagonPos = this.wagon.position;
+        let closestIndex = -1;
+        let closestDist2 = this.pickupRadius * this.pickupRadius;
+
+        for (let i = 0; i < this.hayBales.length; i++) {
+            const hay = this.hayBales[i];
+            const dx = hay.x - wagonPos.x;
+            const dz = hay.z - wagonPos.z;
+            const dist2 = dx * dx + dz * dz;
+            if (dist2 <= closestDist2) {
+                closestDist2 = dist2;
+                closestIndex = i;
+            }
+        }
+
+        if (closestIndex === -1) {
+            return;
+        }
+
+        const pickedHay = this.hayBales.splice(closestIndex, 1)[0];
+        if (this.wagon.addHay && this.wagon.addHay(pickedHay)) {
+            return;
+        }
+
+        this.hayBales.splice(closestIndex, 0, pickedHay);
     }
 
     display() {
@@ -213,7 +281,11 @@ export class MyScene extends CGFscene {
         if (this.wagon) this.wagon.display();
         
         // HAY BALE
-        if (this.hayBale) this.hayBale.display();
+        if (this.hayBales) {
+            for (const hay of this.hayBales) {
+                hay.display();
+            }
+        }
 
     }
 }

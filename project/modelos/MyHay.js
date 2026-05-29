@@ -3,9 +3,12 @@ import { MyCube } from "./shapes/MyCube.js";
 
 export class MyHay {
 
-    constructor(scene) {
+    constructor(scene, x = 0, y = 0, z = 0) {
 
         this.scene = scene;
+        this.x = x;
+        this.y = y;
+        this.z = z;
 
         this.hayBale = new MyCube(scene);
 
@@ -30,9 +33,12 @@ export class MyHay {
     }
 
     display() {
+        this.displayAt(this.x, this.y, this.z);
+    }
 
+    displayAt(x, y, z) {
         this.scene.pushMatrix();
-        this.scene.translate(0, 0, 0);
+        this.scene.translate(x, y, z);
 
         this.hayShader.setUniformsValues({
             uTime: this.scene.currentTime * Math.PI * 2 * 40
