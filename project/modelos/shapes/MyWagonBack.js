@@ -39,6 +39,9 @@ export class MyWagonBack extends CGFobject {
     display() {
         // WAGON
 
+        this.scene.pushMatrix();
+        this.scene.translate(0, 0, -1.05);
+
         // Base
         this.scene.pushMatrix();
         this.wagonWood.apply();
@@ -80,15 +83,10 @@ export class MyWagonBack extends CGFobject {
         this.scene.scale(1.2, 0.15, 2.4);    
         this.cube.display();
         this.scene.popMatrix();
-
+        
         // suporte rodas
-        this.scene.pushMatrix();
-        this.wagonWood.apply();
-        this.scene.translate(0.3, -0.1, -0.2);
-        this.scene.scale(0.1, 0.1, 2.5);
-        this.cube.display();
-        this.scene.popMatrix();
 
+        // trás
         this.scene.pushMatrix();
         this.wagonWood.apply();
         this.scene.translate(2.4, -0.1, -0.2);
@@ -97,6 +95,8 @@ export class MyWagonBack extends CGFobject {
         this.scene.popMatrix();
 
         // wheels
+
+        // tras direita
         this.scene.pushMatrix();
         this.scene.translate(2.4, -0.1, -0.2);
         this.scene.scale(0.1, 0.1, 2.5);
@@ -106,7 +106,8 @@ export class MyWagonBack extends CGFobject {
         this.wagonWood.apply();
         this.wheel.display();
         this.scene.popMatrix();
-        
+
+        // tras esquerda
         this.scene.pushMatrix();
         this.scene.translate(2.4, -0.1, -0.2);
         this.scene.scale(0.1, 0.1, 2.5);
@@ -116,27 +117,69 @@ export class MyWagonBack extends CGFobject {
         this.wagonWood.apply();
         this.wheel.display();
         this.scene.popMatrix();
-        
+
+        // RODAS DA FRENTE
         this.scene.pushMatrix();
-        this.scene.translate(2.4, -0.1, -0.2);
+        this.scene.translate(0.35, 0, 1.05);
+        this.scene.rotate(this.steerAngle, 0, 1, 0);
+        this.scene.translate(-0.35, 0, -1.05);
+
+        // frente direita
+        this.scene.pushMatrix();
+        this.scene.translate(2.4, -0.1, -0.4);
         this.scene.scale(0.1, 0.1, 2.5);
         this.scene.scale(6, 6, 0.2);
-        this.scene.translate(-3.5, 0.1, -0.15);
-        this.scene.rotate(this.steerAngle, 0, 1, 0);
+        this.scene.translate(-3.5, 0.1, -0.25);
         this.scene.rotate(-this.wheelSpin, 0, 0, 1);
         this.wagonWood.apply();
         this.wheel.display();
         this.scene.popMatrix();
         
+        // frente esquerda
         this.scene.pushMatrix();
-        this.scene.translate(2.4, -0.1, -0.2);
+        this.scene.translate(2.4, -0.1, 0);
         this.scene.scale(0.1, 0.1, 2.5);
         this.scene.scale(6, 6, 0.2);
-        this.scene.translate(-3.5, 0.1, 4.95);
-        this.scene.rotate(this.steerAngle, 0, 1, 0);
+        this.scene.translate(-3.5, 0.1, 5);
         this.scene.rotate(-this.wheelSpin, 0, 0, 1);
         this.wagonWood.apply();
         this.wheel.display();
+        this.scene.popMatrix();
+
+        // Suporte de rodas frente
+        this.scene.pushMatrix();
+        this.wagonWood.apply();
+        this.scene.translate(0.3, -0.1, -0.5);
+        this.scene.scale(0.1, 0.1, 3.1);
+        this.cube.display();
+        this.scene.popMatrix();
+
+        //suporte de tração
+        this.scene.pushMatrix();
+        this.wagonWood.apply();
+        this.scene.rotate(3*Math.PI/2, 0, 1, 0);
+        this.scene.translate(0.4, -0.1, -0.3);
+        this.scene.scale(0.1, 0.1, 2.7);
+        this.cube.display();
+        this.scene.popMatrix();
+
+        this.scene.pushMatrix();
+        this.wagonWood.apply();
+        this.scene.rotate(3*Math.PI/2, 0, 1, 0);
+        this.scene.translate(1.6, -0.1, -0.3);
+        this.scene.scale(0.1, 0.1, 2.7);
+        this.cube.display();
+        this.scene.popMatrix();
+
+        // // amarração
+        // this.scene.pushMatrix();
+        // this.amarraAppearance.apply();
+        // this.scene.rotate(Math.PI/2, 0, 1, 0);
+        // this.scene.translate(-1.05, 0.7, -2.5);
+        // this.scene.scale(0.6, 0.55, 2);
+        // this.semiarch.display();
+        // this.scene.popMatrix();
+
         this.scene.popMatrix();
 
         // cobertura
@@ -145,39 +188,6 @@ export class MyWagonBack extends CGFobject {
         this.scene.rotate(Math.PI/2, 0, 1, 0);
         this.scene.translate(-1.05, 1, -0.15);
         this.scene.scale(1.19, 2, 15.75);
-        this.semiarch.display();
-        this.scene.popMatrix();
-        
-        //suporte de tração
-        this.scene.pushMatrix();
-        this.wagonWood.apply();
-        this.scene.rotate(3*Math.PI/2, 0, 1, 0);
-        this.scene.translate(0.4, 0.7, 0);
-        this.scene.scale(0.1, 0.1, 2.5);
-        this.cube.display();
-        this.scene.popMatrix();
-
-        this.scene.pushMatrix();
-        this.wagonWood.apply();
-        this.scene.rotate(3*Math.PI/2, 0, 1, 0);
-        this.scene.translate(1.6, 0.7, 0);
-        this.scene.scale(0.1, 0.1, 2.5);
-        this.cube.display();
-        this.scene.popMatrix();
-
-        this.scene.pushMatrix();
-        this.wagonWood.apply();
-        this.scene.translate(-0.6, 0.8, 0.4);
-        this.scene.scale(0.5, 0.1, 1.3);
-        this.cube.display();
-        this.scene.popMatrix();
-
-        // amarração
-        this.scene.pushMatrix();
-        this.amarraAppearance.apply();
-        this.scene.rotate(Math.PI/2, 0, 1, 0);
-        this.scene.translate(-1.05, 0.7, -2.5);
-        this.scene.scale(0.6, 0.55, 2);
         this.semiarch.display();
         this.scene.popMatrix();
 
@@ -197,6 +207,13 @@ export class MyWagonBack extends CGFobject {
         this.cube.display();
         this.scene.popMatrix();
 
+        this.scene.pushMatrix();
+        this.wagonWood.apply();
+        this.scene.translate(-0.6, 0.8, 0.4);
+        this.scene.scale(0.5, 0.1, 1.3);
+        this.cube.display();
+        this.scene.popMatrix();
+
         // pes do banco
         this.scene.pushMatrix();
         this.wagonWood.apply();
@@ -212,6 +229,9 @@ export class MyWagonBack extends CGFobject {
         this.scene.translate(0.4, 1.6, -1.2);
         this.scene.scale(0.1, 0.1, 1.2);
         this.cube.display();
+        this.scene.popMatrix();
+
+
         this.scene.popMatrix();
     }
 }

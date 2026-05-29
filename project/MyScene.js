@@ -52,7 +52,7 @@ export class MyScene extends CGFscene {
         this.lastTime = Date.now();
         this.displayAxis = true;
 
-        // GROUND
+        //GROUND
         this.ground = new MyGround(this);
         // ROCKS
         this.rocks = new MyRocks(this, this.ground, 80);
@@ -68,11 +68,10 @@ export class MyScene extends CGFscene {
         this.cloudLayer = new MyCloud(this);
         // BARN
         this.barn = new MyBarn(this);
-        // MOUNTAIN
+        //MOUNTAIN
         this.mountains = new MyMountains(this, this.ground, 16);
-        // PATH
+        //PATH
         this.path = new MyPath(this); 
-         
         // BALE
         //this.hayBale = new MyHay(this); 
 
@@ -187,15 +186,15 @@ export class MyScene extends CGFscene {
             this.axis.display();
 
         // GROUND
-        this.ground.display();
+        if (this.ground) this.ground.display();
 
         // MOUNTAINS
-        this.mountains.display();
+        if (this.mountains) this.mountains.display();
         // PATH
-        this.path.display();
-       
+        if (this.path) this.path.display();
+
         // ROCKS
-        this.rocks.display();
+        if (this.rocks) this.rocks.display();
 
         // FLOWERS
         this.flowers.display();

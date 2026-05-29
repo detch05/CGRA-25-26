@@ -10,34 +10,34 @@ export class MyBarn extends CGFobject {
 
         this.woodMaterial = new CGFappearance(scene);
         this.woodMaterial.loadTexture("./images/wood.jpg");
-        this.woodMaterial.setAmbient(0.45, 0.35, 0.3, 1);
-        this.woodMaterial.setDiffuse(0.85, 0.72, 0.6, 1);
-        this.woodMaterial.setSpecular(0.25, 0.22, 0.18, 1);
-        this.woodMaterial.setShininess(25);
+        this.woodMaterial.setAmbient(0.28, 0.22, 0.18, 1);
+        this.woodMaterial.setDiffuse(0.6, 0.5, 0.42, 1);
+        this.woodMaterial.setSpecular(0.08, 0.08, 0.08, 1);
+        this.woodMaterial.setShininess(8);
 
         this.roofMaterial = new CGFappearance(scene);
         this.roofMaterial.loadTexture("./images/darkwood.jpg");
         this.roofMaterial.setTextureWrap('REPEAT','REPEAT');
-        this.roofMaterial.setAmbient(0.28, 0.18, 0.12, 1);
-        this.roofMaterial.setDiffuse(0.6, 0.4, 0.3, 1);
-        this.roofMaterial.setSpecular(0.18, 0.15, 0.12, 1);
-        this.roofMaterial.setShininess(40);
+        this.roofMaterial.setAmbient(0.18, 0.12, 0.08, 1);
+        this.roofMaterial.setDiffuse(0.38, 0.28, 0.2, 1);
+        this.roofMaterial.setSpecular(0.04, 0.04, 0.04, 1);
+        this.roofMaterial.setShininess(4);
         
         // Door material
         this.doorMaterial = new CGFappearance(scene);
         this.doorMaterial.loadTexture("./images/door.jpg");
-        this.doorMaterial.setAmbient(0.4, 0.3, 0.25, 1);
-        this.doorMaterial.setDiffuse(0.9, 0.9, 0.9, 1);
-        this.doorMaterial.setSpecular(0.1, 0.1, 0.1, 1);
-        this.doorMaterial.setShininess(10);
+        this.doorMaterial.setAmbient(0.14, 0.1, 0.08, 1);
+        this.doorMaterial.setDiffuse(0.5, 0.45, 0.4, 1);
+        this.doorMaterial.setSpecular(0.02, 0.02, 0.02, 1);
+        this.doorMaterial.setShininess(2);
 
         // Window material
         this.windowMaterial = new CGFappearance(scene);
         this.windowMaterial.loadTexture("./images/window.jpg");
-        this.windowMaterial.setAmbient(0.28, 0.18, 0.12, 1);
-        this.windowMaterial.setDiffuse(0.6, 0.4, 0.3, 1);
-        this.windowMaterial.setSpecular(0.18, 0.15, 0.12, 1);
-        this.windowMaterial.setShininess(10);
+        this.windowMaterial.setAmbient(0.2, 0.14, 0.1, 1);
+        this.windowMaterial.setDiffuse(0.42, 0.3, 0.22, 1);
+        this.windowMaterial.setSpecular(0.04, 0.04, 0.04, 1);
+        this.windowMaterial.setShininess(4);
         
     }
 
