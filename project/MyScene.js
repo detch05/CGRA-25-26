@@ -88,7 +88,8 @@ export class MyScene extends CGFscene {
         this.dropZoneMaterial = this._createDropZoneMaterial();
         
         // BALE
-        this.hayBales = this._createHayBales(4, 30);
+        this.haySpawnRadius = 30;
+        this.hayBales = this._createHayBales(4, this.haySpawnRadius);
 
         // WAGON
         this.wagon = new MyWagon(this);
@@ -288,6 +289,11 @@ export class MyScene extends CGFscene {
         }
 
         this.wagon.dropHay();
+
+        const newHay = this._createHayBales(1, this.haySpawnRadius)[0];
+        if (newHay) {
+            this.hayBales.push(newHay);
+        }
     }
 
     display() {
@@ -380,6 +386,5 @@ export class MyScene extends CGFscene {
                 hay.display();
             }
         }
-
     }
 }
