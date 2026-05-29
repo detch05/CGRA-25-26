@@ -31,7 +31,7 @@ export class MyGround extends CGFobject {
         );
         const base = (h - 0.3) * this.amplitude;
 
-        const pathHalfWidth = 6.0;
+        const pathHalfWidth = 14.0;
         const blendZone     = 4.0;
         const absx = Math.abs(wx);
 
@@ -136,11 +136,10 @@ export class MyGround extends CGFobject {
     _initMaterials() {
         const scene = this.scene;
 
-        // Carregar as 3 texturas via CGFtexture
+        // Carregar as texturas via CGFtexture
         this.cgfGrass = new CGFtexture(scene, "images/ground.jpg");
         this.cgfDirt  = new CGFtexture(scene, "images/dirt.jpg");
-        this.cgfPath  = new CGFtexture(scene, "images/path.jpg");
-
+        
         // Material neutro — cores vêm 100% das texturas no shader
         this.material = new CGFappearance(scene);
         this.material.setAmbient(1, 1, 1, 1);
@@ -163,21 +162,18 @@ export class MyGround extends CGFobject {
         // bind() das texturas DEPOIS do apply()
         this.cgfGrass.bind(0);
         this.cgfDirt.bind(1);
-        this.cgfPath.bind(2);
 
         this.shader.setUniformsValues({
             uTexGrass:  0,
             uTexDirt:   1,
-            uTexPath:   2,
             uAmplitude: this.amplitude,
-            uPathWidth: 4.0,
-            uPathBlend: 0.8,
+            uPathWidth: 10.0,
+            uPathBlend: 3.0,
         });
 
         super.display();
 
         // Limpar units 1 e 2
-        gl.activeTexture(gl.TEXTURE2); gl.bindTexture(gl.TEXTURE_2D, null);
         gl.activeTexture(gl.TEXTURE1); gl.bindTexture(gl.TEXTURE_2D, null);
         gl.activeTexture(gl.TEXTURE0);
 

@@ -9,7 +9,7 @@ import { MyGrassBlade } from "./MyGrassBlade.js";
  *
  * @param scene        – cena CGF
  * @param ground       – instância de MyGround
- * @param patchCount   – número de patches (default 60)
+ * @param patchCount   – número de patches 
  */
 export class MyGrass {
 
@@ -51,7 +51,7 @@ export class MyGrass {
     _generatePatches(count) {
         const patches = [];
         const half    = 290;
-        const pathW   = 14;   // evitar caminho
+        const pathW   = 20;   // evitar caminho
 
         for (let i = 0; i < count; i++) {
             const s = i * 23 + 11;

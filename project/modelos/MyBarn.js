@@ -42,6 +42,9 @@ export class MyBarn extends CGFobject {
     }
 
     display() {
+        this.scene.pushMatrix();
+        this.scene.rotate(-Math.PI/2, 0, 1, 0);
+
         // --------------Ground Floor---------------
         // frente
         this.scene.pushMatrix();
@@ -149,7 +152,7 @@ export class MyBarn extends CGFobject {
         // restaurar coordenadas de textura padrão para outras quads
         this.Quad.updateTexCoords([0,1, 0,0, 1,0, 1,1]);
 
-        
+        this.scene.popMatrix();
 
         // ------------------------------- 
     }

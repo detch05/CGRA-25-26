@@ -3,7 +3,7 @@ import { CGFobject, CGFappearance } from "../../lib/CGF.js";
 /**
  * MyFlower
  *
- * Flor paramétrica 3D inspirada no exemplo da professora:
+ * Flor paramétrica 3D:
  *  - Caule cilíndrico verde fino
  *  - Folhas laterais no caule
  *  - Pétalas planas grandes em leque horizontal
@@ -99,7 +99,7 @@ export class MyFlower {
             scene.popMatrix();
         }
 
-        // ── Cabeça da flor no topo do caule ──────────────────────
+        // ── Cabeça da flor no topo do caule 
         scene.pushMatrix();
         scene.translate(0, sh, 0);
 

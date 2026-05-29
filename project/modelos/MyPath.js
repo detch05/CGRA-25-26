@@ -1,5 +1,5 @@
 import { CGFappearance } from "../../lib/CGF.js";
-import { MyQuad } from "./MyQuad.js";
+import { MyQuad } from "./shapes/MyQuad.js";
 
 export class MyPath {
 
@@ -30,7 +30,7 @@ export class MyPath {
 
             this.scene.rotate(-Math.PI/2, 1, 0, 0);
 
-            this.scene.scale(12, 8, 1);
+            this.scene.scale(14, 8, 1);
 
             this.quad.display();
 

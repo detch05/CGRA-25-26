@@ -1,14 +1,17 @@
 import { CGFscene, CGFcamera, CGFaxis } from "../lib/CGF.js";
+import { MyInterface } from "./MyInterface.js";
 import { MySky } from "./modelos/MySky.js";
 import { MySun } from "./modelos/MySun.js";
 import { MyCloud } from "./modelos/MyCloud.js";
 import { MyGround } from "./modelos/MyGround.js";
+import { MyWagon } from "./modelos/MyWagon.js";
 import { MyPath } from "./modelos/MyPath.js";
 import { MyRocks } from "./modelos/MyRocks.js";
 import { MyMountains } from "./modelos/MyMountains.js";
 import { MyFlowers } from "./modelos/MyFlowers.js";
 import { MyGrass } from "./modelos/Mygrass.js";
 import { MyBarn } from "./modelos/MyBarn.js";
+import { MyHay } from "./modelos/MyHay.js";
 
 
 /**
@@ -69,7 +72,16 @@ export class MyScene extends CGFscene {
         this.mountains = new MyMountains(this, this.ground, 16);
         // PATH
         this.path = new MyPath(this); 
-        
+         
+        // BALE
+        //this.hayBale = new MyHay(this); 
+
+        // WAGON
+        this.wagon = new MyWagon(this);
+
+        this.setUpdatePeriod(16);
+        // -----
+
     }
 
     initLights() {
@@ -138,6 +150,14 @@ export class MyScene extends CGFscene {
         this.lights[0].setDiffuse(r * intensity, g * intensity, b * intensity, 1.0);
         this.lights[0].update();
     }
+
+    update(t)
+    {
+        if (this.wagon && this.wagon.update) {
+            this.wagon.update(t);
+        }
+    }
+
     display() {
 
         // Clear buffers
@@ -183,15 +203,22 @@ export class MyScene extends CGFscene {
         // GRASS
         this.grass.display();
         // SKY
-        this.sky.display();
+        if (this.sky) this.sky.display();
 
         // SUN AND MOON
-        this.sun.display();
+        if (this.sun) this.sun.display();
 
         // CLOUDS
-        this.cloudLayer.display();
+        if (this.cloudLayer) this.cloudLayer.display();
 
         // BARN
-        this.barn.display();
+        if (this.barn) this.barn.display();
+
+        // WAGON
+        if (this.wagon) this.wagon.display();
+        
+        // HAY BALE
+        if (this.hayBale) this.hayBale.display();
+
     }
 }

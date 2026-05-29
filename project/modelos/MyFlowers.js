@@ -11,7 +11,7 @@ export class MyFlowers {
             r: Math.max(r.scaleX, r.scaleZ) * 1.5
         }));
 
-        // Paleta de cores — branco, amarelo, violeta, rosa (como no slide)
+        // Paleta de cores — branco, amarelo, violeta, rosa 
         this.colors = [
             [1.00, 1.00, 1.00],  // branco
             [1.00, 0.90, 0.15],  // amarelo
@@ -39,7 +39,7 @@ export class MyFlowers {
     _generateClusters(count) {
         const clusters = [];
         const half     = 250;
-        const pathW    = 12;
+        const pathW    = 20;
 
         for (let i = 0; i < count; i++) {
             const s = i * 19 + 7;
