@@ -50,4 +50,24 @@ export class MyHay {
 
         this.scene.popMatrix();
     }
+
+    static createBales(scene, count, maxRadius, ground = null) {
+        const bales = [];
+        const terrain = ground || scene?.ground;
+
+        if (!scene || !terrain || !terrain.getHeightAt) {
+            return bales;
+        }
+
+        for (let i = 0; i < count; i++) {
+            const angle = Math.random() * Math.PI * 2;
+            const radius = Math.sqrt(Math.random()) * maxRadius;
+            const x = Math.cos(angle) * radius;
+            const z = Math.sin(angle) * radius;
+            const y = terrain.getHeightAt(x, z);
+            bales.push(new MyHay(scene, x, y, z));
+        }
+
+        return bales;
+    }
 }

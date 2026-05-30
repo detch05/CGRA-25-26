@@ -1,6 +1,7 @@
 import { CGFobject, CGFappearance } from "../../lib/CGF.js";
 import { MyWagonBack } from "./shapes/MyWagonBack.js";
 import { CGFobjModel } from "../../lib/extra/CGFobjModel.js";
+import { MyHay } from "./MyHay.js";
 
 
 export class MyWagon extends CGFobject {
@@ -35,6 +36,10 @@ export class MyWagon extends CGFobject {
         this.groundOffset = 0.4;
         this.lastUpdateTime = 0;
 
+        this.pickKeyHeld = false;
+        this.dropKeyHeld = false;
+        this.pickupRadius = 3.0;
+
         this.carriedHay = [];
         this.maxHay = 2;
         this.haySlots = [
@@ -65,6 +70,19 @@ export class MyWagon extends CGFobject {
             return null;
         }
         return this.carriedHay.shift();
+    }
+
+    isInDropZone() {
+        const center = this.scene?.dropZoneCenter;
+        const radius = this.scene?.dropZoneRadius;
+
+        if (!center || typeof radius !== "number") {
+            return false;
+        }
+
+        const dx = this.position.x - center.x;
+        const dz = this.position.z - center.z;
+        return (dx * dx + dz * dz) <= (radius * radius);
     }
 
     update(t) {
@@ -127,6 +145,88 @@ export class MyWagon extends CGFobject {
         if (this.scene.ground && this.scene.ground.getHeightAt) {
             const groundY = this.scene.ground.getHeightAt(this.position.x, this.position.z);
             this.position.y = groundY + this.groundOffset;
+        }
+
+        this._handlePickupDrop();
+    }
+
+    _handlePickupDrop() {
+        if (!this.scene.gui || !this.scene.gui.isKeyPressed) {
+            return;
+        }
+
+        const pickPressed = this.scene.gui.isKeyPressed("KeyP");
+        if (pickPressed && !this.pickKeyHeld) {
+            this._tryPickupHay();
+        }
+
+        const dropPressed = this.scene.gui.isKeyPressed("KeyL");
+        if (dropPressed && !this.dropKeyHeld) {
+            this._tryDropHay();
+        }
+
+        this.pickKeyHeld = pickPressed;
+        this.dropKeyHeld = dropPressed;
+    }
+
+    _tryPickupHay() {
+        const hayBales = this.scene.hayBales;
+        if (!hayBales || !hayBales.length) {
+            return;
+        }
+
+        if (!this.canCarryHay()) {
+            return;
+        }
+
+        let closestIndex = -1;
+        let closestDist2 = this.pickupRadius * this.pickupRadius;
+
+        for (let i = 0; i < hayBales.length; i++) {
+            const hay = hayBales[i];
+            const dx = hay.x - this.position.x;
+            const dz = hay.z - this.position.z;
+            const dist2 = dx * dx + dz * dz;
+            if (dist2 <= closestDist2) {
+                closestDist2 = dist2;
+                closestIndex = i;
+            }
+        }
+
+        if (closestIndex === -1) {
+            return;
+        }
+
+        const pickedHay = hayBales.splice(closestIndex, 1)[0];
+        if (this.addHay(pickedHay)) {
+            return;
+        }
+
+        hayBales.splice(closestIndex, 0, pickedHay);
+    }
+
+    _tryDropHay() {
+        if (!this.hasHay()) {
+            return;
+        }
+
+        if (!this.isInDropZone()) {
+            return;
+        }
+
+        const dropped = this.dropHay();
+        if (!dropped) {
+            return;
+        }
+
+        const radius = this.scene?.haySpawnRadius ?? 30;
+        const [newHay] = MyHay.createBales(this.scene, 1, radius);
+
+        if (newHay) {
+            if (!this.scene.hayBales) {
+                this.scene.hayBales = [];
+            }
+            this.scene.hayBales.push(newHay);
         }
     }
 
