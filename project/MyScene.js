@@ -237,10 +237,10 @@ export class MyScene extends CGFscene {
         if (this.rocks) this.rocks.display();
 
         // FLOWERS
-        this.flowers.display();
+        if (this.flowers) this.flowers.display();
 
         // GRASS
-        this.grass.display();
+        if (this.grass) this.grass.display();
         // SKY
         if (this.sky) this.sky.display();
 
