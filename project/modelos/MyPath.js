@@ -30,7 +30,7 @@ export class MyPath {
 
             this.scene.rotate(-Math.PI/2, 1, 0, 0);
 
-            this.scene.scale(12, 8, 1);
+            this.scene.scale(14, 8, 1);
 
             this.quad.display();
 

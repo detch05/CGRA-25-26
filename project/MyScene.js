@@ -8,6 +8,8 @@ import { MyWagon } from "./modelos/MyWagon.js";
 import { MyPath } from "./modelos/MyPath.js";
 import { MyRocks } from "./modelos/MyRocks.js";
 import { MyMountains } from "./modelos/MyMountains.js";
+import { MyFlowers } from "./modelos/MyFlowers.js";
+import { MyGrass } from "./modelos/Mygrass.js";
 import { MyBarn } from "./modelos/MyBarn.js";
 import { MyHay } from "./modelos/MyHay.js";
 import { MyCap } from "./modelos/shapes/MyCap.js";
@@ -56,10 +58,22 @@ export class MyScene extends CGFscene {
 
         //GROUND
         this.ground = new MyGround(this);
-        
+        // ROCKS
+        this.rocks = new MyRocks(this, this.ground, 80);
+        // GRASS
+        this.grass = new MyGrass(this, this.ground,this.rocks, 260);
+        // FLOWERS
+        this.flowers = new MyFlowers(this, this.ground, this.rocks, 280);
+        // SKY
+        this.sky = new MySky(this);
+        // SUN
+        this.sun = new MySun(this);
+        // CLOUD LAYER
+        this.cloudLayer = new MyCloud(this);
+        // BARN
+        this.barn = new MyBarn(this);
         //MOUNTAIN
         this.mountains = new MyMountains(this, this.ground, 16);
-
         //PATH
         this.path = new MyPath(this); 
         
@@ -96,6 +110,7 @@ export class MyScene extends CGFscene {
 
         this.setUpdatePeriod(16);
         // -----
+
     }
 
     _createDropZoneMaterial() {
@@ -335,6 +350,11 @@ export class MyScene extends CGFscene {
         // ROCKS
         if (this.rocks) this.rocks.display();
 
+        // FLOWERS
+        this.flowers.display();
+
+        // GRASS
+        this.grass.display();
         // SKY
         if (this.sky) this.sky.display();
 
