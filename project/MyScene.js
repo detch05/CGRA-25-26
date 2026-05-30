@@ -1,5 +1,6 @@
 import { CGFscene, CGFcamera, CGFaxis, CGFappearance } from "../lib/CGF.js";
 import { MyInterface } from "./MyInterface.js";
+import { MyCameras } from "./modelos/MyCameras.js";
 import { MySky } from "./modelos/MySky.js";
 import { MySun } from "./modelos/MySun.js";
 import { MyCloud } from "./modelos/MyCloud.js";
@@ -56,26 +57,26 @@ export class MyScene extends CGFscene {
         //GROUND
         this.ground = new MyGround(this);
         
-        // ROCKS
-        this.rocks = new MyRocks(this, this.ground, 80);
+        // // ROCKS
+        // this.rocks = new MyRocks(this, this.ground, 80);
 
-        // GRASS
-        this.grass = new MyGrass(this, this.ground,this.rocks, 260);
+        // // GRASS
+        // this.grass = new MyGrass(this, this.ground,this.rocks, 260);
 
-        // FLOWERS
-        this.flowers = new MyFlowers(this, this.ground, this.rocks, 280);
+        // // FLOWERS
+        // this.flowers = new MyFlowers(this, this.ground, this.rocks, 280);
 
-        // SKY
-        this.sky = new MySky(this);
+        // // SKY
+        // this.sky = new MySky(this);
 
-        // SUN
-        this.sun = new MySun(this);
+        // // SUN
+        // this.sun = new MySun(this);
 
-        // CLOUD LAYER
-        this.cloudLayer = new MyCloud(this);
+        // // CLOUD LAYER
+        // this.cloudLayer = new MyCloud(this);
 
-        //MOUNTAIN
-        this.mountains = new MyMountains(this, this.ground, 16);
+        // //MOUNTAIN
+        // this.mountains = new MyMountains(this, this.ground, 16);
 
         //PATH
         this.path = new MyPath(this); 
@@ -149,14 +150,9 @@ export class MyScene extends CGFscene {
     }
 
     initCameras() {
-
-        this.camera = new CGFcamera(
-            0.4,
-            0.1,
-            2000,
-            vec3.fromValues(15, 15, 15),
-            vec3.fromValues(0, 0, 0)
-        );
+        // Instanciar o sistema de câmaras
+        this.cameraManager = new MyCameras(this);
+        this.camera = this.cameraManager.getActiveCamera();
     }
 
     updateLighting() {
@@ -213,6 +209,12 @@ export class MyScene extends CGFscene {
         this.currentTime = (this.currentTime + timeIncrement);
 
         this.updateLighting();
+
+        // Update camera system
+        if (this.cameraManager) {
+            this.cameraManager.update();
+            this.camera = this.cameraManager.getActiveCamera();
+        }
 
         // Camera
         this.updateProjectionMatrix();

@@ -89,6 +89,7 @@ export class MyWagon extends CGFobject {
         if (!this.scene.gui || !this.scene.gui.isKeyPressed) {
             return;
         }
+        
         if (!this.lastUpdateTime) {
             this.lastUpdateTime = t;
             return;
