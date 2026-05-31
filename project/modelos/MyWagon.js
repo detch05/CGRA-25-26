@@ -41,14 +41,17 @@ export class MyWagon extends CGFobject {
         this.lastUpdateTime = 0;
         this.lastDamage = 0;
         this.lastHpDrainTime = Date.now();
+        this.previousPosition = { x: this.position.x, z: this.position.z };
 
         this.pickKeyHeld = false;
         this.dropKeyHeld = false;
         this.pickupRadius = 3.0;
 
         this.collisionRadius = 2.5;
+        this.barnCollisionRadius = 1.0;
+        this.barnWagonRadius = 1.2;
         this.lastCollisionTime = 0;
-        this.collisonCooldown = 1000;
+        this.collisionCooldown = 1000;
 
         this.carriedHay = [];
         this.maxHay = 2;
@@ -69,6 +72,7 @@ export class MyWagon extends CGFobject {
         this.lastDamage = 0;
         this.lastCollisionTime = 0;
         this.lastHpDrainTime = Date.now();
+        this.previousPosition = { x: this.position.x, z: this.position.z };
         this.pickKeyHeld = false;
         this.dropKeyHeld = false;
         this.carriedHay = [];
@@ -120,6 +124,10 @@ export class MyWagon extends CGFobject {
         const dx = this.position.x - center.x;
         const dz = this.position.z - center.z;
         return (dx * dx + dz * dz) <= (radius * radius);
+    }
+
+    _showDamagePopup(damage) {
+        this.scene?.gui?.showDamageOnWagon?.(damage);
     }
 
     update(t) {
@@ -176,6 +184,9 @@ export class MyWagon extends CGFobject {
         const dirZ = Math.cos(this.orientation);
         const distance = this.speed * dt;
 
+        this.previousPosition.x = this.position.x;
+        this.previousPosition.z = this.position.z;
+
         this.position.x += dirX * distance;
         this.position.z += dirZ * distance;
 
@@ -193,7 +204,16 @@ export class MyWagon extends CGFobject {
 
         this._handlePickupDrop();
         this._checkRockCollisions();
+        this._checkBarnCollision();
         this._resolveRockCollisions();
+        this._resolveBarnCollision(this.previousPosition.x, this.previousPosition.z);
+    }
+
+    _getBarnCollisionCenter() {
+        if (this.scene?.barnCollisionCenter) {
+            return this.scene.barnCollisionCenter;
+        }
+        return this.scene?.barnPosition ?? null;
     }
 
     _resolveRockCollisions() {
@@ -220,6 +240,72 @@ export class MyWagon extends CGFobject {
                 if (dot > 0) {
                     this.speed *= 0.3;  // reduz velocidade ao colidir
                 }
+            }
+        }
+    }
+
+    _resolveBarnCollision(prevX, prevZ) {
+        const center = this._getBarnCollisionCenter();
+        if (!center) return;
+
+        const currX = this.position.x;
+        const currZ = this.position.z;
+
+        const dx = currX - center.x;
+        const dz = currZ - center.z;
+        const dist = Math.sqrt(dx * dx + dz * dz);
+        const barnRadius = this.scene?.barnCollisionRadius ?? this.barnCollisionRadius;
+        const minDist = this.barnWagonRadius + barnRadius;
+        let collided = dist < minDist;
+
+        const vx = currX - prevX;
+        const vz = currZ - prevZ;
+        const vLen2 = vx * vx + vz * vz;
+
+        // Sweep test against the barn circle to prevent passing through in one frame.
+        if (!collided && vLen2 > 1e-6) {
+            const tRaw = ((center.x - prevX) * vx + (center.z - prevZ) * vz) / vLen2;
+            const t = Math.max(0, Math.min(1, tRaw));
+            const closestX = prevX + vx * t;
+            const closestZ = prevZ + vz * t;
+            const cdx = closestX - center.x;
+            const cdz = closestZ - center.z;
+            const closestDist = Math.sqrt(cdx * cdx + cdz * cdz);
+            collided = closestDist < minDist;
+        }
+
+        if (collided) {
+            let nx;
+            let nz;
+
+            if (dist > 1e-4) {
+                nx = dx / dist;
+                nz = dz / dist;
+            } else {
+                const pdx = prevX - center.x;
+                const pdz = prevZ - center.z;
+                const pDist = Math.sqrt(pdx * pdx + pdz * pdz);
+                if (pDist > 1e-4) {
+                    nx = pdx / pDist;
+                    nz = pdz / pDist;
+                } else {
+                    nx = -Math.sin(this.orientation);
+                    nz = -Math.cos(this.orientation);
+                }
+            }
+
+            this.position.x = center.x + nx * (minDist + 0.001);
+            this.position.z = center.z + nz * (minDist + 0.001);
+
+            // Reduz a velocidade quando tenta atravessar a barn.
+            const dot = Math.sin(this.orientation) * nx + Math.cos(this.orientation) * nz;
+            if (dot > 0) {
+                this.speed *= 0.3;
+            }
+
+            if (this.scene.ground && this.scene.ground.getHeightAt) {
+                const groundY = this.scene.ground.getHeightAt(this.position.x, this.position.z);
+                this.position.y = groundY + this.groundOffset;
             }
         }
     }
@@ -336,6 +422,7 @@ export class MyWagon extends CGFobject {
                 this.lastDamage = damage;
                 this.scene.hp =
                     Math.max(0, this.scene.hp - damage);
+                this._showDamagePopup(damage);
 
                 this.lastCollisionTime = now;
 
@@ -344,6 +431,33 @@ export class MyWagon extends CGFobject {
                 );
                 break;
             }
+        }
+    }
+
+    _checkBarnCollision() {
+        const center = this._getBarnCollisionCenter();
+        if (!center) {
+            return;
+        }
+
+        const now = Date.now();
+        if (now - this.lastCollisionTime < this.collisionCooldown) {
+            return;
+        }
+
+        const dx = this.position.x - center.x;
+        const dz = this.position.z - center.z;
+        const distance = Math.sqrt(dx * dx + dz * dz);
+        const barnRadius = this.scene?.barnCollisionRadius ?? this.barnCollisionRadius;
+
+        if (distance < this.barnWagonRadius + barnRadius) {
+            const damage = 5 + Math.floor(Math.random() * 11);
+            this.lastDamage = damage;
+            this.scene.hp = Math.max(0, this.scene.hp - damage);
+            this._showDamagePopup(damage);
+            this.lastCollisionTime = now;
+
+            console.log(`Barn collision! Damage: ${damage} HP`);
         }
     }
 

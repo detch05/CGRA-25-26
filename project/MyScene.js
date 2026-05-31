@@ -135,10 +135,12 @@ export class MyScene extends CGFscene {
         this.barn = new MyBarn(this);
         this.barnPosition = { x: 4.5, y: 0, z: 0 };
         this.barnRotation = -Math.PI / 2;
+        this.barnCollisionRadius = 3;
+        this.barnCollisionCenter = this._barnLocalToWorld(2.0, -2.0);
 
-        this.dropZoneLocalCenter = { x: 2.0, z: 1.2 };
+        this.dropZoneLocalCenter = { x: 2.0, z: 2.8 };
         this.dropZoneRadius = 2.5;
-        this.dropZoneCenter = { x: 2.5, z: 2 };
+        this.dropZoneCenter = this._barnLocalToWorld(this.dropZoneLocalCenter.x, this.dropZoneLocalCenter.z);
 
         this.dropZoneMesh = new MyCap(this, 64, 1.0, 0.7, 1);
         this.dropZoneMaterial = this._createDropZoneMaterial();

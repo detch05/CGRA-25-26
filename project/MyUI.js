@@ -4,6 +4,7 @@ export class MyUI extends CGFinterface {
 	constructor() {
 		super();
 		this.hudRoot = null;
+		this.damageLayer = null;
 		this.hpFill = null;
 		this.hpText = null;
 		this.balesText = null;
@@ -155,11 +156,115 @@ export class MyUI extends CGFinterface {
 		this.timeText.textContent = '00:00';
 		timePanel.appendChild(this.timeText);
 
+		const damageLayer = document.createElement('div');
+		damageLayer.style.position = 'absolute';
+		damageLayer.style.inset = '0';
+		damageLayer.style.pointerEvents = 'none';
+		damageLayer.style.overflow = 'hidden';
+
 		root.appendChild(leftPanel);
 		root.appendChild(timePanel);
+		root.appendChild(damageLayer);
 		document.body.appendChild(root);
 
 		this.hudRoot = root;
+		this.damageLayer = damageLayer;
+	}
+
+	_projectWorldToScreen(worldX, worldY, worldZ) {
+		const scene = this.scene;
+		const camera = scene?.camera;
+		const canvas = scene?.gl?.canvas;
+
+		if (!camera || !canvas) {
+			return null;
+		}
+
+		const width = canvas.width;
+		const height = canvas.height;
+
+		if (!width || !height) {
+			return null;
+		}
+
+		const view = camera.getViewMatrix();
+		const projection = camera.getProjectionMatrix(width, height);
+
+		const world = vec4.fromValues(worldX, worldY, worldZ, 1);
+		const clip = vec4.create();
+		vec4.transformMat4(clip, world, view);
+		vec4.transformMat4(clip, clip, projection);
+
+		if (Math.abs(clip[3]) < 1e-6) {
+			return null;
+		}
+
+		const ndcX = clip[0] / clip[3];
+		const ndcY = clip[1] / clip[3];
+		const ndcZ = clip[2] / clip[3];
+
+		if (ndcZ < -1 || ndcZ > 1) {
+			return null;
+		}
+
+		return {
+			x: (ndcX * 0.5 + 0.5) * width,
+			y: (1 - (ndcY * 0.5 + 0.5)) * height
+		};
+	}
+
+	showDamageOnWagon(damage) {
+		if (!this.damageLayer || !this.scene?.wagon) {
+			return;
+		}
+
+		const value = Math.max(1, Math.floor(Math.abs(damage || 0)));
+		const wagon = this.scene.wagon;
+		const randomX = (Math.random() - 0.5) * 1.3;
+		const randomY = 2.2 + Math.random() * 0.6;
+		const randomZ = (Math.random() - 0.5) * 1.0;
+		const screenPos = this._projectWorldToScreen(
+			wagon.position.x + randomX,
+			wagon.position.y + randomY,
+			wagon.position.z + randomZ
+		);
+
+		if (!screenPos) {
+			return;
+		}
+
+		const text = document.createElement('div');
+		text.textContent = `-${value}`;
+		text.style.position = 'absolute';
+		text.style.left = `${screenPos.x}px`;
+		text.style.top = `${screenPos.y}px`;
+		text.style.transform = 'translate(-50%, -50%)';
+		text.style.color = '#ffb3b3';
+		text.style.fontSize = '34px';
+		text.style.fontWeight = '800';
+		text.style.letterSpacing = '0.04em';
+		text.style.textShadow = '0 0 2px rgba(0,0,0,0.95), 0 3px 12px rgba(0,0,0,0.45)';
+		text.style.opacity = '1';
+		text.style.willChange = 'transform, opacity';
+
+		this.damageLayer.appendChild(text);
+
+		const driftX = (Math.random() - 0.5) * 34;
+		const driftY = 38 + Math.random() * 26;
+		const animation = text.animate([
+			{ transform: 'translate(-50%, -50%) scale(1)', opacity: 1 },
+			{ transform: `translate(calc(-50% + ${driftX}px), calc(-50% - ${driftY}px)) scale(1.06)`, opacity: 100 }
+		], {
+			duration: 1000,
+			easing: 'cubic-bezier(0.22, 1, 0.36, 1)',
+			fill: 'forwards'
+		});
+
+		animation.onfinish = () => {
+			if (text.parentNode) {
+				text.parentNode.removeChild(text);
+			}
+		};
 	}
 
 	_formatElapsedTime(seconds) {
