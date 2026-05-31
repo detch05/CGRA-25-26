@@ -95,26 +95,26 @@ export class MyScene extends CGFscene {
         //GROUND
         this.ground = new MyGround(this);
         
-        // // ROCKS
-        // this.rocks = new MyRocks(this, this.ground, 80);
+        // ROCKS
+        this.rocks = new MyRocks(this, this.ground, 80);
 
-        // // GRASS
-        // this.grass = new MyGrass(this, this.ground,this.rocks, 260);
+        // GRASS
+        this.grass = new MyGrass(this, this.ground,this.rocks, 260);
 
-        // // FLOWERS
-        // this.flowers = new MyFlowers(this, this.ground, this.rocks, 280);
+        // FLOWERS
+        this.flowers = new MyFlowers(this, this.ground, this.rocks, 280);
 
-        // // SKY
-        // this.sky = new MySky(this);
+        //SKY
+        this.sky = new MySky(this);
 
-        // // SUN
-        // this.sun = new MySun(this);
+        // SUN
+        this.sun = new MySun(this);
 
-        // // CLOUD LAYER
-        // this.cloudLayer = new MyCloud(this);
+        // CLOUD LAYER
+        this.cloudLayer = new MyCloud(this);
 
-        // //MOUNTAIN
-        // this.mountains = new MyMountains(this, this.ground, 16);
+        //MOUNTAIN
+        this.mountains = new MyMountains(this, this.ground, 16);
 
         //PATH
         this.path = new MyPath(this); 
