@@ -1,4 +1,4 @@
-import { CGFcamera } from "../../lib/CGF.js";
+import { CGFcamera } from "../lib/CGF.js";
 
 /**
  * MyCameras

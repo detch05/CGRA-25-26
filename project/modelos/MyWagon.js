@@ -200,6 +200,7 @@ export class MyWagon extends CGFobject {
 
         const pickedHay = hayBales.splice(closestIndex, 1)[0];
         if (this.addHay(pickedHay)) {
+            this.scene.game?.registerBaleCollected();
             return;
         }
 
@@ -219,6 +220,8 @@ export class MyWagon extends CGFobject {
         if (!dropped) {
             return;
         }
+
+        this.scene.game?.addDeliveredBale();
 
         const radius = this.scene?.haySpawnRadius ?? 30;
         const [newHay] = MyHay.createBales(this.scene, 1, radius);

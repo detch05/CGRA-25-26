@@ -1,6 +1,7 @@
 import { CGFscene, CGFcamera, CGFaxis, CGFappearance } from "../lib/CGF.js";
 import { MyInterface } from "./MyInterface.js";
-import { MyCameras } from "./modelos/MyCameras.js";
+import { MyCameras } from "./MyCameras.js";
+import { MyGame } from "./MyGame.js";
 import { MySky } from "./modelos/MySky.js";
 import { MySun } from "./modelos/MySun.js";
 import { MyCloud } from "./modelos/MyCloud.js";
@@ -26,6 +27,40 @@ export class MyScene extends CGFscene {
         super();
     }
 
+    _bindGameState() {
+        Object.defineProperties(this, {
+            currentTime: {
+                get: () => this.game.getCurrentTime(),
+                set: value => this.game.setCurrentTime(value)
+            },
+            timeSpeed: {
+                get: () => this.game.getTimeSpeed(),
+                set: value => this.game.setTimeSpeed(value)
+            },
+            elapsedTime: {
+                get: () => this.game.getElapsedTime(),
+                set: value => this.game.setElapsedTime(value)
+            },
+            hp: {
+                get: () => this.game.getHp(),
+                set: value => this.game.setHp(value)
+            },
+            collectedBales: {
+                get: () => this.game.getCollectedBales(),
+                set: value => this.game.setCollectedBales(value)
+            },
+            hayBales: {
+                get: () => this.game.getHayBales(),
+                set: value => this.game.setHayBales(value)
+            },
+            deliveredBales: {
+                get: () => this.game.getDeliveredBales(),
+                set: value => this.game.setDeliveredBales(value)
+            }
+
+        });
+    }
+
     init(application) {
 
         super.init(application);
@@ -47,6 +82,9 @@ export class MyScene extends CGFscene {
 
         // Axis
         this.axis = new CGFaxis(this);
+
+        this.game = new MyGame(this);
+        this._bindGameState();
 
         // Interface
         this.currentTime = 0;  // 0 = noon, 0.5 = midnight, 1 = next noon
@@ -205,8 +243,7 @@ export class MyScene extends CGFscene {
         const deltaTime = (currentTime - this.lastTime) / 1000.0;
         this.lastTime = currentTime;
 
-        const timeIncrement = (deltaTime / 240) * this.timeSpeed;
-        this.currentTime = (this.currentTime + timeIncrement);
+        this.game.advanceTime(deltaTime);
 
         this.updateLighting();
 
