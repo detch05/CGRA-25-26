@@ -1,4 +1,4 @@
-import { CGFshader } from "../../lib/CGF.js";
+import { CGFshader } from "../lib/CGF.js";
 import { MyGrassBlade } from "./MyGrassBlade.js";
 
 /**

@@ -1,4 +1,4 @@
-import { CGFappearance, CGFtexture } from "../../lib/CGF.js";
+import { CGFappearance, CGFtexture } from "../lib/CGF.js";
 import { MyRock } from "./MyRock.js";
 
 export class MyRocks {

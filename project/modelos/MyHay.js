@@ -1,4 +1,4 @@
-import { CGFappearance, CGFshader } from "../../lib/CGF.js";
+import { CGFappearance, CGFshader } from "../lib/CGF.js";
 import { MyCube } from "./shapes/MyCube.js";
 
 export class MyHay {

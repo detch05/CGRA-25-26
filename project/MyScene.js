@@ -1,4 +1,4 @@
-import { CGFscene, CGFcamera, CGFaxis, CGFappearance } from "../lib/CGF.js";
+import { CGFscene, CGFcamera, CGFaxis, CGFappearance } from "./lib/CGF.js";
 import { MyInterface } from "./MyInterface.js";
 import { MyCameras } from "./MyCameras.js";
 import { MyGame } from "./MyGame.js";

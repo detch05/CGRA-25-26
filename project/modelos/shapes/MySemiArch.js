@@ -1,4 +1,4 @@
-import {CGFobject} from '../../../lib/CGF.js';
+import {CGFobject} from '../../lib/CGF.js';
 
 export class MySemiArch extends CGFobject {
     constructor(scene, slices = 20, stacks = 1, height = 0.2) {

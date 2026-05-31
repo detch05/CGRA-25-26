@@ -1,6 +1,6 @@
-import { CGFobject, CGFappearance, CGFshader } from "../../lib/CGF.js";
+import { CGFobject, CGFappearance, CGFshader } from "../lib/CGF.js";
 import { MyWagonBack } from "./shapes/MyWagonBack.js";
-import { CGFobjModel } from "../../lib/extra/CGFobjModel.js";
+import { CGFobjModel } from "../lib/extra/CGFobjModel.js";
 import { MyHay } from "./MyHay.js";
 
 

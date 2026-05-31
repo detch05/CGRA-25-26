@@ -1,4 +1,4 @@
-import { CGFobject, CGFappearance, CGFshader, CGFtexture } from "../../lib/CGF.js";
+import { CGFobject, CGFappearance, CGFshader, CGFtexture } from "../lib/CGF.js";
 import { MyNoise } from "./MyNoise.js";
 
 export class MyGround extends CGFobject {

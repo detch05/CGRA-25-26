@@ -1,4 +1,4 @@
-import { CGFobject, CGFappearance } from "../../../lib/CGF.js";
+import { CGFobject, CGFappearance } from "../../lib/CGF.js";
 import { MyUnitCube } from "./MyUnitCube.js";
 import { MyWheel } from "./MyWheel.js";
 import { MySemiArch } from "./MySemiArch.js";

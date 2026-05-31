@@ -1,4 +1,4 @@
-import { CGFobject, CGFappearance } from "../../lib/CGF.js";
+import { CGFobject, CGFappearance } from "../lib/CGF.js";
 import { MyNoise } from "./MyNoise.js";
 
 class MyMountain extends CGFobject {

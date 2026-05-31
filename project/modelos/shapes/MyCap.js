@@ -1,4 +1,4 @@
-import { CGFobject } from '../../../lib/CGF.js';
+import { CGFobject } from '../../lib/CGF.js';
 
 export class MyCap extends CGFobject {
     constructor(scene, slices = 20, outerRadius = 1, innerRadius = 0, normalSign = 1) {

@@ -1,4 +1,4 @@
-import { CGFappearance } from "../../lib/CGF.js";
+import { CGFappearance } from "../lib/CGF.js";
 import { MySphere } from "./shapes/MySphere.js";
 
 export class MySun {

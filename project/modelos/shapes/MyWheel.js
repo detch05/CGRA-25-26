@@ -1,4 +1,4 @@
-import { CGFobject } from "../../../lib/CGF.js";
+import { CGFobject } from "../../lib/CGF.js";
 import { MyBow } from "./MyArch.js";
 import { MyCap } from "./MyCap.js";
 import { MyUnitCube } from "./MyUnitCube.js";
