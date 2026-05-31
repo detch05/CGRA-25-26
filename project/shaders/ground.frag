@@ -4,7 +4,6 @@ precision mediump float;
 
 uniform sampler2D uTexGrass;   // unit 0 — erva
 uniform sampler2D uTexDirt;    // unit 1 — terra seca
-uniform sampler2D uTexPath;    // unit 2 — caminho
 
 uniform float uAmplitude;
 uniform float uPathWidth;
@@ -27,32 +26,13 @@ float vnoise(vec2 p) {
 
 void main() {
     vec4 colGrass = texture2D(uTexGrass, vTexCoord);
-    vec4 colDirt  = texture2D(uTexDirt,  vTexCoord);
-    vec4 colPath  = texture2D(uTexPath,  vTexCoord * 0.6);
 
-    // ── Patches de dirt na erva por noise ────────────────────────
-    float n  = vnoise(vWorldPos.xz * 0.04)
-             + vnoise(vWorldPos.xz * 0.09) * 0.5;
-    n = clamp(n / 1.5, 0.0, 1.0);
-    float dirtMask = smoothstep(0.52, 0.78, n);
-    vec4 terrain = mix(colGrass, colDirt, dirtMask);
+    vec3 L = normalize(vec3(0.4, 1.0, 0.3));
+    vec3 N = normalize(vNormal);
 
-    // ── Blending por altura ───────────────────────────────────────
-    // Zonas altas ficam mais secas/rochosas
-    float normH   = clamp(vWorldPos.y / uAmplitude, 0.0, 1.0);
-    float hillMask = smoothstep(0.3, 0.7, normH);
-    terrain = mix(terrain, colDirt * 1.1, hillMask * 0.5);
-
-    // ── Caminho central de terra (path) ───────────────────────────
-    float absx  = abs(vWorldPos.x);
-    float pathT = 1.0 - smoothstep(uPathWidth - 0.5, uPathWidth + uPathBlend, absx);
-    vec4 finalCol = mix(terrain, colPath, pathT);
-
-    // ── Iluminação Phong direccional ──────────────────────────────
-    vec3 L    = normalize(vec3(0.4, 1.0, 0.3));
-    vec3 N    = normalize(vNormal);
     float diff = max(dot(N, L), 0.0);
-    vec3 lit  = finalCol.rgb * (0.38 + 0.68 * diff);
+
+    vec3 lit = colGrass.rgb * (0.38 + 0.68 * diff);
 
     gl_FragColor = vec4(lit, 1.0);
 }

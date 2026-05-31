@@ -113,7 +113,7 @@ export class MyGround extends CGFobject {
                 const len = Math.sqrt(nx * nx + ny * ny + nz * nz);
                 this.normals.push(nx / len, ny / len, nz / len);
 
-                const uvScale = 10;
+                const uvScale = 1;
                 this.texCoords.push(j / N * uvScale, i / N * uvScale);
             }
         }
