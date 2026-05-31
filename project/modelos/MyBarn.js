@@ -1,4 +1,4 @@
-import { CGFobject, CGFappearance } from "../../lib/CGF.js";
+import { CGFobject, CGFappearance, CGFshader } from "../../lib/CGF.js";
 import { MyQuad } from "./shapes/MyQuad.js";
 import { MyTriangle } from "./shapes/MyTriangle.js";
 
@@ -38,12 +38,20 @@ export class MyBarn extends CGFobject {
         this.windowMaterial.setDiffuse(0.42, 0.3, 0.22, 1);
         this.windowMaterial.setSpecular(0.04, 0.04, 0.04, 1);
         this.windowMaterial.setShininess(4);
+
+        this.shader = new CGFshader(scene.gl, "shaders/wood.vert", "shaders/wood.frag");
         
     }
 
     display() {
         this.scene.pushMatrix();
         this.scene.rotate(-Math.PI/2, 0, 1, 0);
+
+        this.scene.setActiveShader(this.shader);
+        this.shader.setUniformsValues({
+            uWarmth: 0.75,
+            uTime: this.scene.currentTime * Math.PI * 2 * 40
+        });
 
         // --------------Ground Floor---------------
         // frente
@@ -153,6 +161,7 @@ export class MyBarn extends CGFobject {
         this.Quad.updateTexCoords([0,1, 0,0, 1,0, 1,1]);
 
         this.scene.popMatrix();
+        this.scene.setActiveShader(this.scene.defaultShader);
 
         // ------------------------------- 
     }

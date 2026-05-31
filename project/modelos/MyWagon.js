@@ -1,4 +1,4 @@
-import { CGFobject, CGFappearance } from "../../lib/CGF.js";
+import { CGFobject, CGFappearance, CGFshader } from "../../lib/CGF.js";
 import { MyWagonBack } from "./shapes/MyWagonBack.js";
 import { CGFobjModel } from "../../lib/extra/CGFobjModel.js";
 import { MyHay } from "./MyHay.js";
@@ -18,6 +18,8 @@ export class MyWagon extends CGFobject {
         this.horseAppearance.setSpecular(0.2, 0.2, 0.2, 1);
         this.horseAppearance.setShininess(20);
         this.horseAppearance.setTextureWrap("REPEAT", "REPEAT");
+
+        this.shader = new CGFshader(scene.gl, "shaders/wood.vert", "shaders/wood.frag");
 
         this.initialPosition = { x: 2, y: y, z: -3 };
         this.initialOrientation = -0.60;
@@ -346,6 +348,12 @@ export class MyWagon extends CGFobject {
     }
 
     display() {
+        this.scene.setActiveShader(this.shader);
+        this.shader.setUniformsValues({
+            uWarmth: 0.5,
+            uTime: this.scene.currentTime * Math.PI * 2 * 40
+        });
+
         this.scene.pushMatrix();
         this.scene.translate(this.position.x, this.position.y, this.position.z);
         this.scene.rotate(this.orientation, 0, 1, 0);
@@ -381,6 +389,8 @@ export class MyWagon extends CGFobject {
             this.scene.popMatrix();
         }
 
+        this.scene.setActiveShader(this.shader);
+
         // horse
         this.scene.pushMatrix();
         this.scene.translate(2.2, 0, 0);
@@ -402,6 +412,7 @@ export class MyWagon extends CGFobject {
         this.scene.popMatrix();
 
         this.scene.popMatrix();
+        this.scene.setActiveShader(this.scene.defaultShader);
     }
 }
 
