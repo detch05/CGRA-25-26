@@ -92,6 +92,16 @@ export class MyScene extends CGFscene {
         this.lastTime = Date.now();
         this.displayAxis = true;
 
+        // Scene visibility toggles
+        this.showBarn = true;
+        this.showFlowers = true;
+        this.showMountains = true;
+        this.showRocks = true;
+        this.showSunMoon = true;
+        this.showClouds = true;
+        this.showGrass = true;
+        this.showHayBales = true;
+
         //GROUND
         this.ground = new MyGround(this);
         
@@ -268,29 +278,37 @@ export class MyScene extends CGFscene {
         if (this.ground) this.ground.display();
 
         // MOUNTAINS
-        if (this.mountains) this.mountains.display();
+        if (this.showMountains && this.mountains)
+            this.mountains.display();
+
         // PATH
         if (this.path) this.path.display();
 
         // ROCKS
-        if (this.rocks) this.rocks.display();
+        if (this.showRocks && this.rocks)
+            this.rocks.display();
 
         // FLOWERS
-        if (this.flowers) this.flowers.display();
+        if (this.showFlowers && this.flowers)
+            this.flowers.display();
 
         // GRASS
-        if (this.grass) this.grass.display();
+        if (this.showGrass && this.grass)
+            this.grass.display();
+
         // SKY
         if (this.sky) this.sky.display();
 
         // SUN AND MOON
-        if (this.sun) this.sun.display();
+        if (this.showSunMoon && this.sun)
+            this.sun.display();
 
         // CLOUDS
-        if (this.cloudLayer) this.cloudLayer.display();
+        if (this.showClouds && this.cloudLayer)
+            this.cloudLayer.display();
 
         // BARN
-        if (this.barn) {
+        if (this.showBarn && this.barn) {
             this.pushMatrix();
             this.translate(this.barnPosition.x, this.barnPosition.y, this.barnPosition.z);
             this.barn.display();
@@ -326,7 +344,7 @@ export class MyScene extends CGFscene {
         if (this.wagon) this.wagon.display();
         
         // HAY BALE
-        if (this.hayBales) {
+        if (this.showHayBales && this.hayBales) {
             for (const hay of this.hayBales) {
                 hay.display();
             }

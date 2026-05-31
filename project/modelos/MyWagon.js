@@ -35,10 +35,15 @@ export class MyWagon extends CGFobject {
         this.rearAxleOffset = { x: -1.25, y: 0.37, z: 0.76 };
         this.groundOffset = 0.4;
         this.lastUpdateTime = 0;
+        this.lastDamage = 0;
 
         this.pickKeyHeld = false;
         this.dropKeyHeld = false;
         this.pickupRadius = 3.0;
+
+        this.collisionRadius = 2.5;
+        this.lastCollisionTime = 0;
+        this.collisonCooldown = 1000;
 
         this.carriedHay = [];
         this.maxHay = 2;
@@ -149,6 +154,36 @@ export class MyWagon extends CGFobject {
         }
 
         this._handlePickupDrop();
+        this._checkRockCollisions();
+        this._resolveRockCollisions();
+    }
+
+    _resolveRockCollisions() {
+        if (!this.scene.rocks || !this.scene.rocks.rocks) return;
+
+        for (const rock of this.scene.rocks.rocks) {
+            const dx = this.position.x - rock.x;
+            const dz = this.position.z - rock.z;
+            const dist = Math.sqrt(dx*dx + dz*dz);
+            const rockRadius = Math.max(rock.scaleX, rock.scaleZ);
+            const minDist = this.collisionRadius + rockRadius;
+
+            if (dist < minDist && dist > 0.001) {
+                // Empurrar a carroça para fora da pedra
+                const nx = dx / dist;
+                const nz = dz / dist;
+                const overlap = minDist - dist;
+
+                this.position.x += nx * overlap;
+                this.position.z += nz * overlap;
+
+                // Parar o movimento na direcção da pedra
+                const dot = Math.sin(this.orientation) * nx + Math.cos(this.orientation) * nz;
+                if (dot > 0) {
+                    this.speed *= 0.3;  // reduz velocidade ao colidir
+                }
+            }
+        }
     }
 
     _handlePickupDrop() {
@@ -231,6 +266,45 @@ export class MyWagon extends CGFobject {
                 this.scene.hayBales = [];
             }
             this.scene.hayBales.push(newHay);
+        }
+    }
+
+    _checkRockCollisions() {
+
+        if (!this.scene.rocks || !this.scene.rocks.rocks)
+            return;
+
+        const now = Date.now();
+
+        // evita perder HP continuamente
+        if (now - this.lastCollisionTime < this.collisionCooldown)
+            return;
+
+        for (const rock of this.scene.rocks.rocks) {
+
+            const dx = this.position.x - rock.x;
+            const dz = this.position.z - rock.z;
+
+            const distance = Math.sqrt(dx * dx + dz * dz);
+
+            const rockRadius =
+                Math.max(rock.scaleX, rock.scaleZ);
+
+            if (distance < this.collisionRadius + rockRadius) {
+
+                const damage =
+                    5 + Math.floor(Math.random() * 11);
+                this.lastDamage = damage;
+                this.scene.hp =
+                    Math.max(0, this.scene.hp - damage);
+
+                this.lastCollisionTime = now;
+
+                console.log(
+                    `Collision! Damage: ${damage} HP`
+                );
+                break;
+            }
         }
     }
 

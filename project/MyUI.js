@@ -14,7 +14,23 @@ export class MyUI extends CGFinterface {
 		super.init(application);
 
 		this.gui = new dat.GUI();
+		this.gui.width = 300;
+
 		this.gui.add(this.scene, 'displayAxis').name('Display Axis');
+
+		const sceneFolder = this.gui.addFolder('Scene Elements');
+
+		sceneFolder.add(this.scene, 'showBarn').name('Barn');
+		sceneFolder.add(this.scene, 'showFlowers').name('Flowers');
+		sceneFolder.add(this.scene, 'showMountains').name('Mountains');
+		sceneFolder.add(this.scene, 'showRocks').name('Rocks');
+		sceneFolder.add(this.scene, 'showSunMoon').name('Sun & Moon');
+		sceneFolder.add(this.scene, 'showClouds').name('Clouds');
+		sceneFolder.add(this.scene, 'showGrass').name('Grass');
+		sceneFolder.add(this.scene, 'showHayBales').name('Hay Bales');
+
+		sceneFolder.open();
+
 		this.gui.add(this.scene, 'timeSpeed', 0, 20)
 			.step(0.1)
 			.name('Time Speed');
