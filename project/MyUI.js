@@ -181,7 +181,7 @@ export class MyUI extends CGFinterface {
 
 		this.hpFill.style.width = `${hpPercent}%`;
 		this.hpText.textContent = `${hp} / ${maxHp}`;
-		this.balesText.textContent = `Hay Bales entregues: ${game.getDeliveredBales()}`;
+		this.balesText.textContent = `Hay Bales Delivered: ${game.getDeliveredBales()}`;
 		this.timeText.textContent = this._formatElapsedTime(game.getElapsedTime());
 	}
 }

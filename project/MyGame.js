@@ -119,6 +119,10 @@ export class MyGame {
 		return this.collectedBales;
 	}
 
+	registerBaleCollected() {
+		return this.addCollectedBales(1);
+	}
+
     getDeliveredBales() {
         return this.deliveredBales;
     }

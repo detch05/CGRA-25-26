@@ -15,6 +15,7 @@ import { MyGrass } from "./modelos/Mygrass.js";
 import { MyBarn } from "./modelos/MyBarn.js";
 import { MyHay } from "./modelos/MyHay.js";
 import { MyCap } from "./modelos/shapes/MyCap.js";
+import { MyScreens } from "./modelos/MyScreens.js";
 
 
 /**
@@ -91,6 +92,7 @@ export class MyScene extends CGFscene {
         this.timeSpeed = 1;    // Time speed multiplier
         this.lastTime = Date.now();
         this.displayAxis = true;
+        this.screenState = "lobby";
 
         // Scene visibility toggles
         this.showBarn = true;
@@ -142,11 +144,23 @@ export class MyScene extends CGFscene {
         this.dropZoneMaterial = this._createDropZoneMaterial();
         
         // BALE
-        this.haySpawnRadius = 30;
+        this.haySpawnRadius = 60;
         this.hayBales = MyHay.createBales(this, 4, this.haySpawnRadius);
 
         // WAGON
         this.wagon = new MyWagon(this);
+
+        this.lobbyCamera = new CGFcamera(
+            0.4,
+            0.1,
+            2000,
+            vec3.fromValues(-18, 13, 24),
+            vec3.fromValues(3.8, 2.2, -0.8)
+        );
+
+        this.camera = this.lobbyCamera;
+
+        this.screens = new MyScreens(this);
 
         this.setUpdatePeriod(16);
         // -----
@@ -236,8 +250,113 @@ export class MyScene extends CGFscene {
 
     update(t)
     {
+        if (this.screenState !== "playing") {
+            return;
+        }
+
         if (this.wagon && this.wagon.update) {
             this.wagon.update(t);
+        }
+    }
+
+    setScreenState(state) {
+        this.screenState = state;
+
+        if (this.screens) {
+            if (state === "lobby") {
+                this.screens.showLobby();
+                this.camera = this.lobbyCamera;
+            } else if (state === "pause") {
+                this.screens.showPause();
+            } else if (state === "gameover") {
+                this.screens.showGameOver();
+            } else {
+                this.screens.showPlaying();
+            }
+        }
+
+        if (state !== "playing") {
+            this.lastTime = Date.now();
+        }
+    }
+
+    resetGameState() {
+        if (this.game) {
+            this.game.reset();
+        }
+
+        if (this.wagon && typeof this.wagon.reset === "function") {
+            this.wagon.reset();
+        }
+
+        this.hayBales = MyHay.createBales(this, 4, this.haySpawnRadius);
+
+        if (this.cameraManager && typeof this.cameraManager.reset === "function") {
+            this.cameraManager.reset();
+        }
+
+        this.currentTime = 0;
+        this.timeSpeed = 1;
+        this.lastTime = Date.now();
+    }
+
+    startGame() {
+        this.resetGameState();
+        this.setScreenState("playing");
+
+        if (this.cameraManager) {
+            this.cameraManager.resetThirdPersonView();
+        }
+
+        this.camera = this.cameraManager ? this.cameraManager.getActiveCamera() : this.camera;
+
+        if (this.gui && typeof this.gui.setActiveCamera === "function") {
+            this.gui.setActiveCamera(this.camera);
+        }
+    }
+
+    pauseGame() {
+        if (this.screenState !== "playing") {
+            return;
+        }
+
+        this.setScreenState("pause");
+    }
+
+    resumeGame() {
+        if (this.screenState !== "pause") {
+            return;
+        }
+
+        this.setScreenState("playing");
+        this.lastTime = Date.now();
+
+        if (this.gui && typeof this.gui.setActiveCamera === "function") {
+            this.gui.setActiveCamera(this.camera);
+        }
+    }
+
+    restartGame() {
+        this.resetGameState();
+        this.setScreenState("playing");
+
+        if (this.cameraManager) {
+            this.cameraManager.resetThirdPersonView();
+        }
+
+        this.camera = this.cameraManager ? this.cameraManager.getActiveCamera() : this.camera;
+
+        if (this.gui && typeof this.gui.setActiveCamera === "function") {
+            this.gui.setActiveCamera(this.camera);
+        }
+    }
+
+    returnToLobbyAfterGameOver() {
+        this.resetGameState();
+        this.setScreenState("lobby");
+
+        if (this.gui && typeof this.gui.setActiveCamera === "function") {
+            this.gui.setActiveCamera(this.camera);
         }
     }
 
@@ -253,14 +372,30 @@ export class MyScene extends CGFscene {
         const deltaTime = (currentTime - this.lastTime) / 1000.0;
         this.lastTime = currentTime;
 
-        this.game.advanceTime(deltaTime);
+        if (this.screens) {
+            this.screens.update();
+        }
+
+        if (this.screenState === "playing") {
+            this.game.advanceTime(deltaTime);
+        }
+
+        if (this.screenState === "playing" && this.game && this.game.getHp() <= 0) {
+            this.setScreenState("gameover");
+        }
 
         this.updateLighting();
 
         // Update camera system
-        if (this.cameraManager) {
+        if (this.screenState === "lobby") {
+            this.camera = this.lobbyCamera;
+        } else if (this.cameraManager && this.screenState === "playing") {
             this.cameraManager.update();
             this.camera = this.cameraManager.getActiveCamera();
+        }
+
+        if (this.gui && typeof this.gui.setActiveCamera === "function") {
+            this.gui.setActiveCamera(this.camera);
         }
 
         // Camera

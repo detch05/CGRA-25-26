@@ -19,8 +19,10 @@ export class MyWagon extends CGFobject {
         this.horseAppearance.setShininess(20);
         this.horseAppearance.setTextureWrap("REPEAT", "REPEAT");
 
-        this.position = { x, y, z };
-        this.orientation = 0;
+        this.initialPosition = { x: 2, y: y, z: -3 };
+        this.initialOrientation = -0.60;
+        this.position = { ...this.initialPosition };
+        this.orientation = this.initialOrientation;
         this.speed = 0;
         this.maxSpeed = 6;
         this.accel = 4;
@@ -36,6 +38,7 @@ export class MyWagon extends CGFobject {
         this.groundOffset = 0.4;
         this.lastUpdateTime = 0;
         this.lastDamage = 0;
+        this.lastHpDrainTime = Date.now();
 
         this.pickKeyHeld = false;
         this.dropKeyHeld = false;
@@ -52,6 +55,33 @@ export class MyWagon extends CGFobject {
             { x: 1.8, y: 0.2, z: 1.4 }
         ];
         this.hayScale = 1;
+    }
+
+    reset() {
+        this.position = { ...this.initialPosition };
+        this.orientation = this.initialOrientation;
+        this.speed = 0;
+        this.steerAngle = 0;
+        this.wheelSpin = 0;
+        this.lastUpdateTime = 0;
+        this.lastDamage = 0;
+        this.lastCollisionTime = 0;
+        this.lastHpDrainTime = Date.now();
+        this.pickKeyHeld = false;
+        this.dropKeyHeld = false;
+        this.carriedHay = [];
+
+        if (this.scene?.ground && typeof this.scene.ground.getHeightAt === "function") {
+            this.position.y = this.scene.ground.getHeightAt(this.position.x, this.position.z) + this.groundOffset;
+        }
+
+        if (this.WagonBack?.setSteerAngle) {
+            this.WagonBack.setSteerAngle(0);
+        }
+
+        if (this.WagonBack?.setWheelSpin) {
+            this.WagonBack.setWheelSpin(0);
+        }
     }
 
     canCarryHay() {
@@ -102,6 +132,12 @@ export class MyWagon extends CGFobject {
 
         const dt = (t - this.lastUpdateTime) / 1000;
         this.lastUpdateTime = t;
+
+        const now = Date.now();
+        while (now - this.lastHpDrainTime >= 3000) {
+            this.scene.game?.damageHp(2);
+            this.lastHpDrainTime += 3000;
+        }
 
         const forward = this.scene.gui.isKeyPressed("KeyW");
         const brake = this.scene.gui.isKeyPressed("KeyS");
@@ -257,6 +293,7 @@ export class MyWagon extends CGFobject {
         }
 
         this.scene.game?.addDeliveredBale();
+        this.scene.game?.healHp(30);
 
         const radius = this.scene?.haySpawnRadius ?? 30;
         const [newHay] = MyHay.createBales(this.scene, 1, radius);
